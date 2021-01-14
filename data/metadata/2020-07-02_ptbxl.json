@@ -1,0 +1,255 @@
+{
+"age": {
+	"description": "Age",
+	"type": "float",
+	"values_one_hot": 
+		{
+		"age-1": [1, 0, 0, 0, 0, 0], 
+		"age-2": [0, 1, 0, 0, 0, 0], 
+		"age-3": [0, 0, 1, 0, 0, 0],
+		"age-4": [0, 0, 0, 1, 0, 0], 
+		"age-5": [0, 0, 0, 0, 1, 0], 
+		"age-6": [0, 0, 0, 0, 0, 1]
+		},
+	"valmin": 18, 
+	"valmax": 120,
+	"categorization_rules": [
+		{
+		"start": 0,
+		"end": 40,
+		"name": "age-1"
+		},
+		{
+		"start": 40,
+		"end": 50,
+		"name": "age-2"
+		},
+		{
+		"start": 50,
+		"end": 55,
+		"name": "age-3"
+		},
+		{
+		"start": 55,
+		"end": 60,
+		"name": "age-4"
+		},
+		{
+		"start": 60,
+		"end": 65,
+		"name": "age-5"
+		},
+		{
+		"start": 65,
+		"end": 121,
+		"name": "age-6"
+		}
+	]
+},
+"sex": {
+	"description": "Sex",
+	"type": "char",
+	"values_one_hot":
+		{
+		"m": [1, 0], 
+		"f": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "m", 
+		"1": "f"
+		}
+},
+"BMI": {
+	"description": "Body-mass-index",
+	"type": "float",
+	"values_one_hot": 
+		{
+		"underweight": [1, 0, 0, 0, 0, 0], 
+		"normalweight": [0, 1, 0, 0, 0, 0],
+		"pre-obese": [0, 0, 1, 0, 0, 0], 
+		"obesity-I": [0, 0, 0, 1, 0, 0], 
+		"obesity-II": [0, 0, 0, 0, 1, 0],
+		"obesity-III": [0, 0, 0, 0, 0, 1]
+		},
+	"valmin": 10, 
+	"valmax": 60,
+	"categorization_rules": [
+		{
+		"start": 0,
+		"end": 18.5,
+		"name": "underweight"
+		},
+		{
+		"start": 18.5,
+		"end": 25,
+		"name": "normalweight"
+		},
+		{
+		"start": 25,
+		"end": 30,
+		"name": "pre-obese"
+		},
+		{
+		"start": 30,
+		"end": 35,
+		"name": "obesity-I"
+		},
+		{
+		"start": 35,
+		"end": 40,
+		"name": "obesity-II"
+		},
+		{
+		"start": 40,
+		"end": 61,
+		"name": "obesity-III"
+		}
+	]
+},
+"BSA": {
+	"description": "Body-surface-area",
+	"type": "float",
+	"values_one_hot":
+		{
+		"bsa-1": [1, 0, 0, 0, 0, 0], 
+		"bsa-2": [0, 1, 0, 0, 0, 0], 
+		"bsa-3": [0, 0, 1, 0, 0, 0],
+		"bsa-4": [0, 0, 0, 1, 0, 0], 
+		"bsa-5": [0, 0, 0, 0, 1, 0], 
+		"bsa-6": [0, 0, 0, 0, 0, 1]
+		},
+	"valmin": 1, 
+	"valmax": 4,
+	"categorization_rules": [
+		{
+		"start": 0,
+		"end": 1.3,
+		"name": "bsa-1"
+		},
+		{
+		"start": 1.3,
+		"end": 1.6,
+		"name": "bsa-2"
+		},
+		{
+		"start": 1.6,
+		"end": 1.9,
+		"name": "bsa-3"
+		},
+		{
+		"start": 1.9,
+		"end": 2.2,
+		"name": "bsa-4"
+		},
+		{
+		"start": 2.2,
+		"end": 2.5,
+		"name": "bsa-5"
+		},
+		{
+		"start": 2.5,
+		"end": 4.1,
+		"name": "bsa-6"
+		}
+	]
+},
+"obesity": {
+	"description": "Obesity",
+	"type": "char",
+	"values_one_hot":
+		{
+		"True": [1, 0], 
+		"False": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "False", 
+		"1": "True"
+		}
+},
+"MI": {
+	"description": "Myocardial infarction",
+	"type": "char",
+	"values_one_hot":
+		{
+		"True": [1, 0], 
+		"False": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "False", 
+		"1": "True"
+		}
+},
+"AMI": {
+	"description": "Anterior myocardial infarction",
+	"type": "char",
+	"values_one_hot": 
+		{
+		"True": [1, 0], 
+		"False": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "False", 
+		"1": "True"
+		}
+},
+"IMI": {
+	"description": "Inferior myocardial infarction",
+	"type": "char",
+	"values_one_hot":
+		{
+		"True": [1, 0], 
+		"False": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "False", 
+		"1": "True"
+		}
+},
+"LMI": {
+	"description": "Lateral myocardial infarction",
+	"type": "char",
+	"values_one_hot":
+		{
+		"True": [1, 0], 
+		"False": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "False", 
+		"1": "True"
+		}
+},
+"PMI": {
+	"description": "Posterior myocardial infarction",
+	"type": "char",
+	"values_one_hot":
+		{
+		"True": [1, 0], 
+		"False": [0, 1]
+		},
+	"values_allowed":
+		["0", "1"],
+	"values_replace":
+		{
+		"0": "False", 
+		"1": "True"
+		}
+}
+}
