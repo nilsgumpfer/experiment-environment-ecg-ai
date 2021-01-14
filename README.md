@@ -1,52 +1,7 @@
-# How to work with this experiment environment on Yamata
+# How to work with this experiment environment
 ## General steps
 
-#### Environment
-We use an NVIDIA DGX-1 computing environment provided and maintained by MNI in Gießen, codename 'YAMATA'. Responsible for this server is Prof. Dr. Andreas Dominik. Contact person in his workgroup is Eric Hartmann.
-
-#### Access
-Ask Eric Hartmann for access (eric.hartmann@mni.thm.de) and a port number you can use for tensorboard.
-
-#### Login
-Login to VPN or directly use the THM network to be able to connect to the server. Connect via SSH using your THM account and standard (email) password
-`ssh $THMUSER$@bioinf-yamata.mni.thm.de`, for example `ssh ngmp33@bioinf-yamata.mni.thm.de`.
-
-#### Docker container setup
-
-##### Build and start container
-Run `docker run -it -d -v /raid/$THMUSER$:/data --gpus all -p $OPENEDPORT$:6006 --name $CONTAINERNAME$ $IMAGENAME$:$IMAGETAG$ bash` to create a new container based on an image, for example
-`docker run -it -d -v /raid/ngmp33:/data --gpus all -p 7900:6006 --name ngmp33_exp1 ngmp33_exp:v1.0 bash`.
-
-Our current stable image is `ngmp33_exp:v1.2`.
-
-##### Connect to container
-Run `docker exec -it $CONTAINERNAME$ bash` to connect to your container, for example `docker exec -it ngmp33_exp1 bash`.
-
-##### Setup environment
-In the `/home` directory inside the container, run the shell script `environment_setup.sh` via `bash environment_setup.sh`.
-
-1. You will be prompted to login to the gitlab repository
-
-2. You will be prompted to login to google cloud
-
-3. Data from PTB-XL will be downloaded (see https://physionet.org/content/ptb-xl/)
-
-#### Disconnect from a container
-Run `exit` inside the container to come back to the yamata console.
-
-##### Screens
-
-To be able to run multiple parallel sessions / processes on the server, we use screens (virtual consoles). You can attach to and detach from such a virtual console.
-
-To create a screen, run `screen` and accept the prompt with some key.
-
-In the screen, you can work like on the normal console. To detach from the screen, press `CTRL + A`, followed by `D`
-
-To attach again to a screen, run `screen -r`. This won't work when you opened more than one screen.
-
-To list all opened screens, run `screen -ls`. To attach to a specific screen, run `screen -r $SCREEN_ID$`. You can accelerate this step by typing the first numbers of the ID and then hitting `TAB`.
-
-To close a screen, run `exit` when you are attached to a screen.
+TODO: Use Ubuntu, Nvidia cards, etc.
 
 ## Working with the enviromnent
 
@@ -93,7 +48,6 @@ data | clinical_parameters_inputs | no | String, comma-separated list (no space)
 data | ecg_variants | yes | String, comma-separated list (no space) | The variants of the ECG the model should be able to use later during training. Currently, only ecg_raw is implemented. In future, als ecg_delta will be available |
 data | snapshot_id | yes | String, comma-separated list (no space) | The IDs of the snapshots that should be used for data extraction during preprocessing. Multiple snapshot names are only allowed for Kerckhoff data. The record-IDs have to be unique, to prevent overlapping snapshots. For PTB-XL data, only the first value in the list will be used. |
 data | record_ids_excluded | no | String, comma-separated list (no space) | List of record-IDs that should be excluded during data-preprocessing (e.g. because of wrong/missing data) |
-data | crop_id | no | String | The ID of the crop marker file located in data/crops/ (without filetype). The crop marker file generation done running the crop_runner in the runner package. |
 data | source_id | no | String | Currently, this parameter is not in use. Later, it could serve for further data-type differentiation |
 data | metadata_id | yes | String | The ID of the metadata file located in data/metadata/ (without filetype) |
 data | stratification_variable | yes | String | The name of the output variable that should be used for stratification of the train/validation/test splits  |
@@ -118,41 +72,9 @@ evaluation | tensorboard_subdir | yes | String | The subdir for tensorboard (you
 evaluation | sensitivity_threshold | yes | Float between 0 and 1 | The threshold for epoch/model selection. All models weaker than this value will not be considered for final metric calculation |
 evaluation | specificity_threshold | yes | Float between 0 and 1 | The threshold for epoch/model selection. All models weaker than this value will not be considered for final metric calculation |
 evaluation | save_raw_results | no | Boolean | The unfiltered result list containing all epochs can be saved to disk. Consider, that this file will be very large and requires much diskspace! |
-hyperparameters_ecgmodel | ecgmodel_initializer_conv | no | String | Convolutional weight initializer of ECG model |
-hyperparameters_ecgmodel | ecgmodel_initializer_dense | no | String | Dense layer weight initializer of ECG model |
-hyperparameters_ecgmodel | ecgmodel_number_layers_conv | no | Integer | Number of convolutional layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_number_filters_conv | no | Integer | Number of convolutional filters of ECG model |
-hyperparameters_ecgmodel | ecgmodel_number_layers_dense | no | Integer | Number of dense layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_number_neurons_dense | no | Integer | Number of neurons per dense layer of ECG model |
-hyperparameters_ecgmodel | ecgmodel_size_kernel_conv | no | Integer | Size of convolutional kernel of ECG model |
-hyperparameters_ecgmodel | ecgmodel_size_kernel_pool | no | Integer | Size of pooling kernel of ECG model |
-hyperparameters_ecgmodel | ecgmodel_stride_conv | no | Integer | Length of convolutional stride of ECG model |
-hyperparameters_ecgmodel | ecgmodel_stride_pool | no | Integer | Length of pooling stride of ECG model |
-hyperparameters_ecgmodel | ecgmodel_padding_conv | no | “valid”, “causal”, “same” | Type of padding of convolutional layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_dropout_conv | no | Boolean | If dropout should be used between convolutional layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_dropout_dense | no | Boolean | If dropout should be used between dense layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_dropout_rate_conv | no | Float | Dropout rate that should be used between convolutional layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_dropout_rate_dense | no | Float | Dropout rate that should be used between dense layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_activation_function_conv | no | String | Activation function of convolutional layers of ECG model |
-hyperparameters_ecgmodel | ecgmodel_activation_function_dense | no | String | Activation function of dense layers of ECG model |
-hyperparameters_clinicalparametermodel | clinicalparametermodel_initializer_dense | no | String | Dense layer weight initializer of clinical-parameter-model |
-hyperparameters_clinicalparametermodel | clinicalparametermodel_dropout_dense | no | Boolean | If dropout should be used between dense layers of clinical-parameter-model |
-hyperparameters_clinicalparametermodel | clinicalparametermodel_dropout_rate_dense | no | Float | Dropout rate that should be used between dense layers of clinical-parameter-model |
-hyperparameters_clinicalparametermodel | clinicalparametermodel_activation_function_dense | no | String | Activation function of dense layers of clinical-parameter-model |
-hyperparameters_clinicalparametermodel | clinicalparametermodel_number_neurons_dense | no | Integer | Number of neurons per dense layer of clinical-parameter-model |
-hyperparameters_clinicalparametermodel | clinicalparametermodel_number_layers_dense | no | Integer | Number of dense layers of clinical-parameter-model |
-hyperparameters_combinationmodel | combinationmodel_initializer_dense | no | String | Dense layer weight initializer of combination-model |
-hyperparameters_combinationmodel | combinationmodel_dropout_dense | no | Boolean | If dropout should be used between dense layers of combination-model |
-hyperparameters_combinationmodel | combinationmodel_dropout_rate_dense | no | Float | Dropout rate that should be used between dense layers of combination-model |
-hyperparameters_combinationmodel | combinationmodel_activation_function_dense | no | String | Activation function of dense layers of combination-model |
-hyperparameters_combinationmodel | combinationmodel_number_neurons_dense | no | Integer | Number of neurons per dense layer of combination-model |
-hyperparameters_combinationmodel | combinationmodel_number_layers_dense | no | Integer | Number of dense layers of combination-model |
-explanation | low_level_method | no | String | Low-level explanation method (iNNvestigate analyzer ID, https://github.com/albermax/innvestigate) → still experimental |
-explanation | high_level_method | no | String | High-level explanation method (e.g. heatmap clustering, etc.) → still experimental |
-explanation | xai_class_name | no | String | Class name of output class that should be considered for explanation |
-transfer_learning | load_model_experiment_id | no | String | (Sub)experiment-ID of the model that should be loaded for transfer learning |
-transfer_learning | load_model_epoch | no | Integer | Epoch number of the model that should be loaded for transfer learning |
-transfer_learning | remove_last_layers | no | Integer | Number of last model layers to remove (usually the dense classifier layers) |
+
+TODO: describe hyperparameters for flex model
+
 
 #### Data preprocessing
 
@@ -162,10 +84,6 @@ To run data preprocessing for an experiment, switch to directory `/runner/prepro
 
 To run data splitting for an experiment, switch to directory `/runner/splitting_runner` and run `python3 splitting_runner.py -e $EXPERIMENT_ID$`, for example `python3 splitting_runner.py -e 2020-07_my_first_experiment`
 
-#### ECG cropping
-
-To run ECG cropping for an experiment, switch to directory `/runner/splitting_runner` and run `python3 cropping_runner.py -e $EXPERIMENT_ID$`, for example `python3 cropping_runner.py -e 2020-07_my_first_experiment`
-
 #### Experiment conduction
 
 To run an experiment, switch to directory `/runner/experiment_runner` and run `python3 experiment_runner.py -e $EXPERIMENT_ID$`, for example `python3 experiment_runner.py -e 2020-07_my_first_experiment`
@@ -173,22 +91,3 @@ To run an experiment, switch to directory `/runner/experiment_runner` and run `p
 #### Experiment evaluation
 
 To evaluate an experiment, switch to directory `/runner/evaluation_runner` and run `python3 evaluation_runner.py -e $EXPERIMENT_ID$`, for example `python3 evaluation_runner.py -e 2020-07_my_first_experiment`
-
-
-### Web Interface
-
-#### Tensorboard
-
-To start tensorboard, open a new screen and run `tensorboard --logdir=/data/ecg-dl-experiment-environment/tensorboard/$SUBDIR$ --bind_all`. You can reach it via `https://bioinf-yamata.mni.thm.de:$OPENEDPORT$`, for example `https://bioinf-yamata.mni.thm.de:7900`. 
-
-**Important notice:** For each experiment, there is a mandatory parameter in the config file called `tensorboard_subdir`, which specifies where the tensorboard files are logged to. This is due to the fact that tensorboard becomes very slow if a large amount of logs has to be managed. For this reason, the logs are separated into subdirs.
-
-#### Experiment overview
-
-To get an overview of all experiments where you can also access the evaluation results, open a new screen and run `python3 manage.py runserver 0:6006`. You can reach it via `https://bioinf-yamata.mni.thm.de:$OPENEDPORT$`, for example `https://bioinf-yamata.mni.thm.de:7900`. 
-
-_Hint:_ Keep in mind that the experiment overview has to run on a different port than tensorboard. Otherwise, open two separate ports.
-
-#### File system browser
-
-To access the file system of your docker container, go to `https://bioinf-yamata.mni.thm.de:$OPENEDPORT$/filesystembrowser`. Make sure to run the steps descibed in "Experiment overview" above to start the web service.
