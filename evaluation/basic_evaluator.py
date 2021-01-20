@@ -1,6 +1,6 @@
 from evaluation.abstract_evaluator import AbstractEvaluator
 from utils.experiments.evaluation import save_results_for_experiment, distribute_results_for_experiment, \
-    save_placeholder_files_to_logdir, cleanup_weights_for_experiment, perform_test_for_models
+    save_placeholder_files_to_logdir, cleanup_weights_for_experiment
 
 
 class BasicEvaluator(AbstractEvaluator):
@@ -28,6 +28,3 @@ class BasicEvaluator(AbstractEvaluator):
                                        class_names=self.params['class_names'],
                                        calculation_methods=self.params['calculation_methods'],
                                        epochs=self.params['number_epochs'])
-
-        perform_test_for_models(experiment_id=self.experiment_id,
-                                params=self.params)

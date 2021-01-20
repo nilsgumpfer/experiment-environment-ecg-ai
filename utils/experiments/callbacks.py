@@ -59,10 +59,6 @@ class CustomCallbackV1(Callback):
         # Visualize model, save to main experiment directory
         visualize_model(self.model, self.main_experiment_logdir)
 
-        # analyzer = innvestigate.create_analyzer('lrp.epsilon', self.model)
-        # analysis = analyzer.analyze(self.x_val)
-        # print(analysis)
-
     def on_train_batch_begin(self, batch, logs=None):
         pass
 

@@ -1,68 +1,18 @@
 import logging
-from datetime import datetime
 import os
 
 import json
 import numpy as np
 import pandas as pd
-from os import path
 
 from sklearn.utils import shuffle, resample
 from xml.dom import minidom
 
 from utils.api.wfdb_api import load_norm_and_mi_ecgs, load_patientrecords_mi_norm
 from utils.data.validation import validate_and_clean_float, validate_and_clean_char
-from utils.file.file import save_dict_as_json, save_string_to_file, load_string_from_file, load_dict_from_json, \
+from utils.file.file import save_dict_as_json, load_string_from_file, load_dict_from_json, \
     pickle_data, unpickle_data, make_dirs_if_not_present
-from utils.api.redcap_api import load_report, load_file
 from utils.misc.datastructure import perform_shape_switch
-
-
-def create_snapshot_from_redcap_api(snapshot_directory='../data/kerckhoff/snapshots', datasource='schiller'):
-    report_ids = {'schiller': 253, 'cardiosoft': 252}
-    variable_ids = {'schiller': 'varid_ekg_schiller_pdf', 'cardiosoft': 'varid_ekg_pdf'}
-
-    if datasource not in report_ids.keys():
-        raise Exception('Unsupported datatype "{}". Please use one of "{}" instead.'.format(datasource, list(report_ids.keys())))
-
-    snapshot_id = datetime.now().strftime("%Y-%m-%d")
-
-    snapshot_id = '{}_{}'.format(snapshot_id, datasource)
-
-    snapshot_path = '{}/{}'.format(snapshot_directory, snapshot_id)
-    snapshot_path_clinicalparameters = '{}/{}'.format(snapshot_path, 'clinicalparameters')
-    snapshot_path_ecg = '{}/{}'.format(snapshot_path, 'ecg')
-
-    if path.exists(snapshot_path):
-        raise Exception('A snapshot with ID {} already exists! Please manually clean the directory if you want to renew the snapshot. Path: {}'.format(snapshot_id, snapshot_path))
-    else:
-        os.makedirs(snapshot_path)
-        os.mkdir(snapshot_path_clinicalparameters)
-        os.mkdir(snapshot_path_ecg)
-
-    report = load_report(report_id=report_ids[datasource])
-
-    for record, i in zip(report, range(len(report))):
-        print('Processing record {} of {}'.format(i+1, len(report)))
-
-        record_id = record['record_id']
-
-        try:
-            ecg_data = load_file(record_id=record_id, field=variable_ids[datasource], event='baseline_arm_1')
-
-            if '<error>' in ecg_data:
-                raise Exception(ecg_data)
-
-            filepath = '{}/{}.csv'.format(snapshot_path_ecg, record_id)
-            save_string_to_file(ecg_data, filepath)
-
-            filepath = '{}/{}.json'.format(snapshot_path_clinicalparameters, record_id)
-            save_dict_as_json(record, filepath)
-
-        except Exception as e:
-            logging.warning('Skipping record {} due to Exception: {}'.format(record_id, e))
-
-    print('Created snapshot with name "{}" at "{}"'.format(snapshot_id, snapshot_directory))
 
 
 def parse_ecg_xml(xmlcode, leads_to_use=None, sampling_rate=500):
@@ -134,15 +84,8 @@ def load_ecg_csv(path, sampling_rate=500, uom='uV', leads_to_use=None):
     return leads, metadata
 
 
-def save_ecg_csv(path, ecg):
-    logging.debug('Saving {}'.format(path))
-    leads = ecg['leads']
-    df = pd.DataFrame.from_dict(leads)
-    df.to_csv(path)
-
-
-def load_ecgs_from_redcap_snapshot(snapshot, leads_to_use, record_ids_excluded,
-                                   snapshot_directory='../../data/kerckhoff/snapshots'):
+def load_ecgs_from_custom_snapshot(snapshot, leads_to_use, record_ids_excluded,
+                                   snapshot_directory='../../data/custom/snapshots'):
     path = snapshot_directory + '/{}/ecg/'.format(snapshot)
     ecgfiles = os.listdir(path)
 
@@ -164,8 +107,8 @@ def load_ecgs_from_redcap_snapshot(snapshot, leads_to_use, record_ids_excluded,
     return ecgs
 
 
-def load_ecgs_from_redcap_snapshots(snapshots, leads_to_use, record_ids_excluded,
-                                    snapshot_directory='../../data/kerckhoff/snapshots'):
+def load_ecgs_from_custom_snapshots(snapshots, leads_to_use, record_ids_excluded,
+                                    snapshot_directory='../../data/custom/snapshots'):
     ecgs = {}
 
     for snapshot in snapshots:
@@ -189,7 +132,8 @@ def load_ecgs_from_redcap_snapshots(snapshots, leads_to_use, record_ids_excluded
 
             if exclude is False:
                 if record_id in ecgs.keys():
-                    raise Exception('ECGs for record-id "{}" contained in multiple snapshots. Aborting.'.format(record_id))
+                    raise Exception(
+                        'ECGs for record-id "{}" contained in multiple snapshots. Aborting.'.format(record_id))
 
                 leads, metadata = load_ecg_dynamic(path + filename, leads_to_use)
                 ecgs[record_id] = {'leads': leads, 'metadata': metadata}
@@ -299,102 +243,15 @@ def derive_ecg_variants_multi(ecgs, variants):
     return derived_ecgs
 
 
-def calculate_delta_for_lead(lead):
-    delta_list = []
-
-    for index in range(0, len(lead) - 1):
-        delta_list.append(lead[index + 1] - lead[index])
-
-    delta_list = np.round(np.array(delta_list), 6)
-
-    return delta_list
-
-
-def calculate_delta_for_leads(leads):
-    delta_leads = {}
-
-    for lead_id in leads:
-        delta_leads[lead_id] = calculate_delta_for_lead(leads[lead_id])
-
-    return delta_leads
-
-
-def derive_ecg_from_delta_for_lead(delta_lead):
-    value_list = []
-    v = delta_lead[0]
-
-    for index in range(0, len(delta_lead)):
-        v += delta_lead[index]
-        value_list.append(v)
-
-    value_list = np.round(np.array(value_list), 6)
-
-    return value_list
-
-
-def derive_ecg_from_delta_for_leads(delta_leads):
-    leads = {}
-
-    for lead_id in delta_leads:
-        leads[lead_id] = derive_ecg_from_delta_for_lead(delta_leads[lead_id])
-
-    return leads
-
-
 def derive_ecg_variants(ecg, variants):
     derived_ecg = {}
     for variant in variants:
         if variant == 'ecg_raw':
             derived_ecg[variant] = ecg['leads']
-        elif variant == 'ecg_delta':
-            derived_ecg[variant] = calculate_delta_for_leads(ecg['leads'])
 
     derived_ecg['metadata'] = ecg['metadata']
 
     return derived_ecg
-
-
-def crop_ecg(ecg, start, end):
-    for lead_id in ecg['leads']:
-        lead = np.array(ecg['leads'][lead_id])
-        ecg['leads'][lead_id] = lead[start:end]
-
-    ecg['metadata']['crop_start'] = start
-    ecg['metadata']['crop_end'] = end
-
-    update_metadata_length(ecg, start, end)
-
-    return ecg
-
-
-def load_crops(crop_id, crop_path='../../data/crops/'):
-    return load_dict_from_json(crop_path + crop_id + '.json')
-
-
-def save_crops(crops, crop_id, crop_path='../../data/crops/'):
-    return save_dict_as_json(crops, crop_path + crop_id + '.json')
-
-
-def crop_ecgs(ecgs, crop_id):
-    if crop_id is not None:
-        crops = load_crops(crop_id)
-        cropped_ecgs = {}
-
-        for record_id in ecgs:
-            try:
-                start = crops[record_id]['start']
-                end = crops[record_id]['end']
-                cropped_ecgs[record_id] = crop_ecg(ecgs[record_id], start, end)
-            except KeyError:
-                logging.warning(
-                    'No crop markers found for record {}. Please check if this was intended. Proceeding anyway.'.format(
-                        record_id))
-                cropped_ecgs[record_id] = ecgs[record_id]
-
-        return cropped_ecgs
-
-    else:
-        return ecgs
 
 
 def extract_subsample_from_leads_dict_based(leads, start, end):
@@ -450,7 +307,7 @@ def extract_subsample_from_ecg_matrix_based(ecg, start, end):
 
 
 def subsample_ecgs(ecgs, subsampling_factor, window_size, ecg_variant='ecg_raw'):
-    collected_subsamples = []  # TODO vielleicht dict für untersch. ekg varianten
+    collected_subsamples = []
     collected_diagnoses = []
     collected_clinical_parameters = []
     collected_metadata = []
@@ -499,9 +356,9 @@ def subsample_ecgs(ecgs, subsampling_factor, window_size, ecg_variant='ecg_raw')
     return collected_record_ids, collected_metadata, collected_diagnoses, collected_clinical_parameters, collected_subsamples
 
 
-def load_clinical_parameters_from_redcap_snapshots(snapshots, clinical_parameters_inputs, clinical_parameters_outputs,
+def load_clinical_parameters_from_custom_snapshots(snapshots, clinical_parameters_inputs, clinical_parameters_outputs,
                                                    record_ids_excluded,
-                                                   snapshot_directory='../../data/kerckhoff/snapshots'):
+                                                   snapshot_directory='../../data/custom/snapshots'):
     clinicalparameters = {}
 
     for snapshot in snapshots:
@@ -519,7 +376,9 @@ def load_clinical_parameters_from_redcap_snapshots(snapshots, clinical_parameter
 
             if exclude is False:
                 if record_id in clinicalparameters.keys():
-                    raise Exception('Clinical parameters for record-id "{}" contained in multiple snapshots. Aborting.'.format(record_id))
+                    raise Exception(
+                        'Clinical parameters for record-id "{}" contained in multiple snapshots. Aborting.'.format(
+                            record_id))
 
                 inputs, outputs = load_clinical_parameters_json(path + filename, clinical_parameters_inputs,
                                                                 clinical_parameters_outputs)
@@ -527,109 +386,6 @@ def load_clinical_parameters_from_redcap_snapshots(snapshots, clinical_parameter
                                                  'clinical_parameters_outputs': outputs}
 
     return clinicalparameters
-
-
-def load_clinical_parameters_from_redcap_snapshot(snapshot, clinical_parameters_inputs, clinical_parameters_outputs,
-                                                  record_ids_excluded,
-                                                  snapshot_directory='../../data/kerckhoff/snapshots'):
-    path = snapshot_directory + '/{}/clinicalparameters/'.format(snapshot)
-    parameterfiles = os.listdir(path)
-
-    clinicalparameters = {}
-
-    for filename in parameterfiles:
-        exclude = False
-        record_id = filename.replace('.json', '')
-
-        if record_ids_excluded is not None:
-            if record_id in record_ids_excluded:
-                exclude = True
-                logging.info('Excluded record "{}" from dataloading (clinical parameters)'.format(record_id))
-
-        if exclude is False:
-            inputs, outputs = load_clinical_parameters_json(path + filename, clinical_parameters_inputs,
-                                                            clinical_parameters_outputs)
-            clinicalparameters[record_id] = {'clinical_parameters_inputs': inputs,
-                                             'clinical_parameters_outputs': outputs}
-
-    return clinicalparameters
-
-
-def add_aggregated_segment_information(record):
-    segmentation = {1: ['varid_1659', 'varid_1677', 'varid_1695', 'varid_1713'],
-                    2: ['varid_1660', 'varid_1678', 'varid_1696', 'varid_1714'],
-                    3: ['varid_1661', 'varid_1679', 'varid_1697', 'varid_1715'],
-                    4: ['varid_1662', 'varid_1680', 'varid_1698', 'varid_1716'],
-                    5: ['varid_1663', 'varid_1681', 'varid_1699', 'varid_1717'],
-                    6: ['varid_1664', 'varid_1682', 'varid_1700', 'varid_1718'],
-                    7: ['varid_1665', 'varid_1683', 'varid_1701', 'varid_1719'],
-                    8: ['varid_1666', 'varid_1684', 'varid_1702', 'varid_1720'],
-                    9: ['varid_1667', 'varid_1685', 'varid_1703', 'varid_1721'],
-                    10: ['varid_1668', 'varid_1686', 'varid_1704', 'varid_1722'],
-                    11: ['varid_1669', 'varid_1687', 'varid_1705', 'varid_1723'],
-                    12: ['varid_1670', 'varid_1688', 'varid_1706', 'varid_1724'],
-                    13: ['varid_1671', 'varid_1689', 'varid_1707', 'varid_1725'],
-                    14: ['varid_1672', 'varid_1690', 'varid_1708', 'varid_1726'],
-                    15: ['varid_1673', 'varid_1691', 'varid_1709', 'varid_1727'],
-                    16: ['varid_1674', 'varid_1692', 'varid_1710', 'varid_1728'],
-                    17: ['varid_1675', 'varid_1693', 'varid_1711', 'varid_1729']}
-
-    regionmap = {'LE_anterior': [1, 7],
-                 'LE_anteroseptal': [2, 8],
-                 'LE_inferoseptal': [3, 9],
-                 'LE_inferior': [4, 10],
-                 'LE_inferolateral': [5, 11],
-                 'LE_anterolateral': [6, 12],
-                 'LE_apical': [13, 14, 15, 16, 17]}
-
-    aggregation = {}
-
-    for segment in segmentation:
-        k = 'LE_segment_{}'.format(segment)
-        aggregation[k] = 0
-
-        for column in segmentation[segment]:
-            if record[column] == '1':
-                aggregation[k] = 1
-
-    for region in regionmap:
-        aggregation[region] = 0
-
-        for segment in regionmap[region]:
-            if aggregation['LE_segment_{}'.format(segment)] == 1:
-                aggregation[region] = 1
-
-    record.update(aggregation)
-
-    return record
-
-
-def add_norm_information(record):
-    if record['varid_1657'] == '1':
-        record['NO_LE'] = 0
-        record['LE'] = 1
-    else:
-        record['NO_LE'] = 1
-        record['LE'] = 0
-
-    return record
-
-
-def load_patientrecords_scar(snapshot, snapshot_directory='../data/kerckhoff/snapshots'):
-    path = snapshot_directory + '/{}/clinicalparameters/'.format(snapshot)
-    parameterfiles = os.listdir(path)
-
-    records = []
-
-    for filename in parameterfiles:
-        record = load_dict_from_json(path + filename)
-        record = add_aggregated_segment_information(record)
-        record = add_norm_information(record)
-        records.append(record)
-
-    df = pd.DataFrame(records)
-
-    return df
 
 
 def load_clinical_parameters_from_ptbxl_snapshot(snapshot, clinical_parameters_inputs, clinical_parameters_outputs,
@@ -761,7 +517,8 @@ def load_split(split_id, split_directory='../../data/splits/'):
     return load_dict_from_json(split_directory + split_id + '.json')
 
 
-def load_and_split_dataset(dataset_id, split_id, dataset_directory='../../data/datasets/', split_directory='../../data/splits/'):
+def load_and_split_dataset(dataset_id, split_id, dataset_directory='../../data/datasets/',
+                           split_directory='../../data/splits/'):
     records_split = {}
 
     records = load_dataset(dataset_id, dataset_directory=dataset_directory)
@@ -882,7 +639,9 @@ def save_split(split_id, records_train, records_val, split_dir='../../data/split
     path = '{}/{}.json'.format(split_dir, split_id)
 
     if os.path.exists(path):
-        raise Exception('Split file at "{}" already exists. Splits cannot be overwritten due to repoducibility guidelines. Make sure they are not used by any other experiments! Please delete them manually if you want to replace them.'.format(path))
+        raise Exception(
+            'Split file at "{}" already exists. Splits cannot be overwritten due to repoducibility guidelines. Make sure they are not used by any other experiments! Please delete them manually if you want to replace them.'.format(
+                path))
 
     save_dict_as_json(split, path)
 
@@ -893,7 +652,9 @@ def save_test_split(split_id, records_test, split_dir='../../data/splits'):
     path = '{}/{}_test.json'.format(split_dir, split_id)
 
     if os.path.exists(path):
-        raise Exception('Split file at "{}" already exists. Splits cannot be overwritten due to repoducibility guidelines. Make sure they are not used by any other experiments! Please delete them manually if you want to replace them.'.format(path))
+        raise Exception(
+            'Split file at "{}" already exists. Splits cannot be overwritten due to repoducibility guidelines. Make sure they are not used by any other experiments! Please delete them manually if you want to replace them.'.format(
+                path))
 
     save_dict_as_json(split, path)
 
@@ -1031,7 +792,8 @@ def generate_splits_for_dataset_and_validation_type(split_id, dataset_id, valida
         records_test = []
 
         for sg in stratification_groups:
-            test_tmp = draw_test_records_from_population(stratification_groups[sg], variables['ratio_test'], random_seed)
+            test_tmp = draw_test_records_from_population(stratification_groups[sg], variables['ratio_test'],
+                                                         random_seed)
             records_test += test_tmp
             stratification_groups[sg] = list(set(stratification_groups[sg]) - set(test_tmp))
 

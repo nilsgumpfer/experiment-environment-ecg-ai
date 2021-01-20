@@ -7,10 +7,6 @@ from utils.data.data import validate_and_clean_clinical_parameters_for_records, 
     combine_ecgs_and_clinical_parameters, save_dataset, load_ecgs_from_ptbxl, \
     load_clinical_parameters_from_ptbxl_snapshot, load_metadata, derive_ecg_variants_multi
 
-import numpy as np
-
-from utils.file.file import pickle_data, unpickle_data
-
 
 class PtbxlPreprocessor(AbstractPreprocessor):
 
@@ -25,7 +21,7 @@ class PtbxlPreprocessor(AbstractPreprocessor):
         logging.info('Loaded ECGs from snaphot')
 
         # 2. Further ECG derivation
-        derived_ecgs = derive_ecg_variants_multi(original_ecgs, self.params['ecg_variants'])
+        derived_ecgs = derive_ecg_variants_multi(original_ecgs, ['ecg_raw'])
         logging.info('Derived further ECG variants')
 
         # 3. Load clinical parameters

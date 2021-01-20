@@ -104,8 +104,10 @@ def save_experiment_config(config, experiment_id, expdir='../../experiments/'):
     with open(expdir + experiment_id + '.ini', 'w') as fp:
         config.write(fp)
 
+
 def str2bool(v):
     return v.lower() in ("True", "true")
+
 
 def parse_config_parameters(config):
     # Mandatory parameters
@@ -133,11 +135,8 @@ def parse_config_parameters(config):
         'subsampling_factor': config['data'].getint('subsampling_factor'),
         'subsampling_window_size': config['data'].getint('subsampling_window_size'),
         'clinical_parameters_inputs': config['data'].get('clinical_parameters_inputs'),
-        'ecg_variants': config['data'].get('ecg_variants').split(','),
         'snapshot_id': config['data'].get('snapshot_id').split(','),
         'record_ids_excluded': config['data'].get('record_ids_excluded'),
-        'crop_id': config['data'].get('crop_id'),
-        'source_id': config['data'].get('source_id'),
         'metadata_id': config['data'].get('metadata_id'),
         'stratification_variable': config['data'].get('stratification_variable'),
         'ratio_split': config['data'].getfloat('ratio_split'),
@@ -161,106 +160,45 @@ def parse_config_parameters(config):
         'tensorboard_subdir': config['evaluation'].get('tensorboard_subdir'),
         'sensitivity_threshold': config['evaluation'].getfloat('sensitivity_threshold'),
         'specificity_threshold': config['evaluation'].getfloat('specificity_threshold'),
-        'save_raw_results': config['evaluation'].getboolean('save_raw_results'),
-        'ensembling_methods': config['evaluation'].get('ensembling_methods'),
+        'save_raw_results': config['evaluation'].getboolean('save_raw_results')
     }
 
-    # Optional param group: ecg model
-    try:
-        params_ecgmodel = {
-            'ecgmodel_initializer_conv': config['hyperparameters_ecgmodel'].get('initializer_conv'),
-            'ecgmodel_initializer_dense': config['hyperparameters_ecgmodel'].get('initializer_dense'),
-            'ecgmodel_number_layers_conv': config['hyperparameters_ecgmodel'].getint('number_layers_conv'),
-            'ecgmodel_number_filters_conv': config['hyperparameters_ecgmodel'].getint('number_filters_conv'),
-            'ecgmodel_number_layers_dense': config['hyperparameters_ecgmodel'].getint('number_layers_dense'),
-            'ecgmodel_number_neurons_dense': config['hyperparameters_ecgmodel'].getint('number_neurons_dense'),
-            'ecgmodel_size_kernel_conv': config['hyperparameters_ecgmodel'].getint('size_kernel_conv'),
-            'ecgmodel_size_kernel_pool': config['hyperparameters_ecgmodel'].getint('size_kernel_pool'),
-            'ecgmodel_stride_conv': config['hyperparameters_ecgmodel'].getint('stride_conv'),
-            'ecgmodel_stride_pool': config['hyperparameters_ecgmodel'].getint('stride_pool'),
-            'ecgmodel_padding_conv': config['hyperparameters_ecgmodel'].get('padding_conv'),
-            'ecgmodel_dropout_conv': config['hyperparameters_ecgmodel'].getboolean('dropout_conv'),
-            'ecgmodel_dropout_dense': config['hyperparameters_ecgmodel'].getboolean('dropout_dense'),
-            'ecgmodel_dropout_rate_conv': config['hyperparameters_ecgmodel'].getfloat('dropout_rate_conv'),
-            'ecgmodel_dropout_rate_dense': config['hyperparameters_ecgmodel'].getfloat('dropout_rate_dense'),
-            'ecgmodel_activation_function_conv': config['hyperparameters_ecgmodel'].get('activation_function_conv'),
-            'ecgmodel_activation_function_dense': config['hyperparameters_ecgmodel'].get('activation_function_dense')
-        }
-        params.update(params_ecgmodel)
-    except:
-        pass
-
-    # Optional param group: clinical parameter model
-    try:
-        params_clinparammodel = {
-            'clinicalparametermodel_initializer_dense': config['hyperparameters_clinicalparametermodel'].get('initializer_dense'),
-            'clinicalparametermodel_dropout_dense': config['hyperparameters_clinicalparametermodel'].getboolean('dropout_dense'),
-            'clinicalparametermodel_dropout_rate_dense': config['hyperparameters_clinicalparametermodel'].getfloat('dropout_rate_dense'),
-            'clinicalparametermodel_activation_function_dense': config['hyperparameters_clinicalparametermodel'].get('activation_function_dense'),
-            'clinicalparametermodel_number_neurons_dense': config['hyperparameters_clinicalparametermodel'].getint('number_neurons_dense'),
-            'clinicalparametermodel_number_layers_dense': config['hyperparameters_clinicalparametermodel'].getint('number_layers_dense')
-        }
-        params.update(params_clinparammodel)
-    except:
-        pass
-
-    # Optional param group: combination model
-    try:
-        params_model = {
-            'combinationmodel_initializer_dense': config['hyperparameters_combinationmodel'].get('initializer_dense'),
-            'combinationmodel_dropout_dense': config['hyperparameters_combinationmodel'].getboolean('dropout_dense'),
-            'combinationmodel_dropout_rate_dense': config['hyperparameters_combinationmodel'].getfloat('dropout_rate_dense'),
-            'combinationmodel_activation_function_dense': config['hyperparameters_combinationmodel'].get('activation_function_dense'),
-            'combinationmodel_number_neurons_dense': config['hyperparameters_combinationmodel'].getint('number_neurons_dense'),
-            'combinationmodel_number_layers_dense': config['hyperparameters_combinationmodel'].getint('number_layers_dense')
-        }
-        params.update(params_model)
-    except:
-        pass
-
     # Optional param group: flexible ecg model (these parameters are parsed differently, based on lists)
-
     try:
         params_ecgmodel_flex = {
-            'ecgmodel_number_filters_conv': [int(x) for x in config['hyperparameters_ecgmodel_flex'].get('number_filters_conv').split(',')],
-            'ecgmodel_number_neurons_dense': [int(x) for x in config['hyperparameters_ecgmodel_flex'].get('number_neurons_dense').split(',')],
-            'ecgmodel_size_kernel_conv': [int(x) for x in config['hyperparameters_ecgmodel_flex'].get('size_kernel_conv').split(',')],
-            'ecgmodel_size_kernel_pool': [int(x) for x in config['hyperparameters_ecgmodel_flex'].get('size_kernel_pool').split(',')],
-            'ecgmodel_stride_conv': [int(x) for x in config['hyperparameters_ecgmodel_flex'].get('stride_conv').split(',')],
-            'ecgmodel_stride_pool': [int(x) for x in config['hyperparameters_ecgmodel_flex'].get('stride_pool').split(',')],
+            'ecgmodel_number_filters_conv': [int(x) for x in
+                                             config['hyperparameters_ecgmodel_flex'].get('number_filters_conv').split(
+                                                 ',')],
+            'ecgmodel_number_neurons_dense': [int(x) for x in
+                                              config['hyperparameters_ecgmodel_flex'].get('number_neurons_dense').split(
+                                                  ',')],
+            'ecgmodel_size_kernel_conv': [int(x) for x in
+                                          config['hyperparameters_ecgmodel_flex'].get('size_kernel_conv').split(',')],
+            'ecgmodel_size_kernel_pool': [int(x) for x in
+                                          config['hyperparameters_ecgmodel_flex'].get('size_kernel_pool').split(',')],
+            'ecgmodel_stride_conv': [int(x) for x in
+                                     config['hyperparameters_ecgmodel_flex'].get('stride_conv').split(',')],
+            'ecgmodel_stride_pool': [int(x) for x in
+                                     config['hyperparameters_ecgmodel_flex'].get('stride_pool').split(',')],
             'ecgmodel_padding_conv': config['hyperparameters_ecgmodel_flex'].get('padding_conv').split(','),
-            'ecgmodel_maxpooling_conv': [str2bool(x) for x in config['hyperparameters_ecgmodel_flex'].get('maxpooling_conv').split(',')],
-            'ecgmodel_batchnorm_conv': [str2bool(x) for x in config['hyperparameters_ecgmodel_flex'].get('batchnorm_conv').split(',')],
-            'ecgmodel_batchnorm_dense': [str2bool(x) for x in config['hyperparameters_ecgmodel_flex'].get('batchnorm_dense').split(',')],
+            'ecgmodel_maxpooling_conv': [str2bool(x) for x in
+                                         config['hyperparameters_ecgmodel_flex'].get('maxpooling_conv').split(',')],
+            'ecgmodel_batchnorm_conv': [str2bool(x) for x in
+                                        config['hyperparameters_ecgmodel_flex'].get('batchnorm_conv').split(',')],
+            'ecgmodel_batchnorm_dense': [str2bool(x) for x in
+                                         config['hyperparameters_ecgmodel_flex'].get('batchnorm_dense').split(',')],
             'ecgmodel_transition_conv_dense': config['hyperparameters_ecgmodel_flex'].get('transition_conv_dense'),
-            'ecgmodel_dropout_rate_conv': [float(x) for x in config['hyperparameters_ecgmodel_flex'].get('dropout_rate_conv').split(',')],
-            'ecgmodel_dropout_rate_dense': [float(x) for x in config['hyperparameters_ecgmodel_flex'].get('dropout_rate_dense').split(',')],
-            'ecgmodel_activation_function_conv': config['hyperparameters_ecgmodel_flex'].get('activation_function_conv').split(','),
-            'ecgmodel_activation_function_dense': config['hyperparameters_ecgmodel_flex'].get('activation_function_dense').split(',')
+            'ecgmodel_dropout_rate_conv': [float(x) for x in
+                                           config['hyperparameters_ecgmodel_flex'].get('dropout_rate_conv').split(',')],
+            'ecgmodel_dropout_rate_dense': [float(x) for x in
+                                            config['hyperparameters_ecgmodel_flex'].get('dropout_rate_dense').split(
+                                                ',')],
+            'ecgmodel_activation_function_conv': config['hyperparameters_ecgmodel_flex'].get(
+                'activation_function_conv').split(','),
+            'ecgmodel_activation_function_dense': config['hyperparameters_ecgmodel_flex'].get(
+                'activation_function_dense').split(',')
         }
         params.update(params_ecgmodel_flex)
-    except:
-        pass
-
-    # Optional param group: explanation
-    try:
-        params_xai = {
-            'low_level_method': config['explanation'].get('low_level_method'),
-            'high_level_method': config['explanation'].get('high_level_method'),
-            'xai_class_name': config['explanation'].get('class_name'),
-        }
-        params.update(params_xai)
-    except:
-        pass
-
-    # Optional param group: transfer learning
-    try:
-        params_tl = {
-            'load_model_experiment_id': config['transfer_learning'].get('load_model_experiment_id'),
-            'load_model_epoch': config['transfer_learning'].getint('load_model_epoch'),
-            'remove_last_layers': config['transfer_learning'].getint('remove_last_layers')
-        }
-        params.update(params_tl)
     except:
         pass
 
@@ -280,11 +218,6 @@ def parse_config_parameters(config):
         params['bootstrapping_n'] = config['hyperparameters_general'].getint('bootstrapping_n')
         if params['bootstrapping_n'] is None:
             raise Exception('Missing parameter "bootstrapping_n". Aborting.')
-
-    if params['ensembling_methods'] is not None:
-        params['ensembling_methods'] = params['ensembling_methods'].split(',')
-    else:
-        params['ensembling_methods'] = ['averaging']
 
     return params
 

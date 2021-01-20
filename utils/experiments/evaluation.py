@@ -10,18 +10,15 @@ import numpy as np
 import pandas as pd
 from natsort import natsorted
 from tensorflow.python.keras.backend import clear_session
-from tensorflow.python.keras.saving.model_config import model_from_json
 
-from dataloading.basic_dataloader import BasicDataloader
-from utils.data.data import derive_binary_one_hot_classes_for_list_of_labels, load_dataset, subsample_ecgs, load_split
-from utils.experiments.metrics import auc, sroc, confusionmatrix, sensitivity, specificity, roc, \
-    calculate_metrics_for_predictions, get_max_value_for_metric
+from utils.data.data import derive_binary_one_hot_classes_for_list_of_labels
+from utils.experiments.metrics import auc, sroc, confusionmatrix, calculate_metrics_for_predictions, \
+    get_max_value_for_metric
 from utils.experiments.model import load_model, load_model_and_weights_from_paths
 from utils.experiments.validation import single_repeated, cross_validation_repeated, bootstrapping_repeated, \
     bootstrapping, cross_validation, derive_validation_method_from_experiment_config
 from utils.file.file import parse_experiment_config, load_dict_from_json, combine_pdfs, save_string_to_file, \
-    load_string_from_file, extract_different_config_parameters, unpickle_data, pickle_data
-from utils.misc.datastructure import perform_shape_switch
+    load_string_from_file, extract_different_config_parameters
 
 
 def load_results_for_epoch(exp_id, epoch_id, class_name, calculation_method):
@@ -159,72 +156,6 @@ def derive_weights_and_model_paths_for_experiment(experiment_id, class_name, cal
                 model_paths.append(model_path)
 
     return weights_paths, model_paths
-
-
-def perform_test_for_models(experiment_id, params, logdir='../../logs/experiments', datasetdir='../../data/datasets/'):
-    try:
-        load_split(params['split_id'] + '_test')
-    except FileNotFoundError:
-        logging.info('No test split found')
-        return None
-
-    logging.info('Testing models')
-
-    record_ids, metadata, diagnosis, clinical_parameters, ecg_raw = BasicDataloader(params).load_test_data()
-
-    # X = [np.asarray(ecg_raw), np.asarray(clinical_parameters)] # TODO: make dynamic for combined model
-    X = np.asarray(ecg_raw)
-    Y = np.asarray(diagnosis)
-
-    print('X shape: ', np.shape(X))
-
-    for class_name in params['class_names']:
-        for calculation_method in params['calculation_methods']:
-            subdir = '{}/{}/{}/{}'.format(logdir, experiment_id, class_name, calculation_method)
-
-            weights_paths, model_paths = derive_weights_and_model_paths_for_experiment(experiment_id,
-                                                                                       class_name,
-                                                                                       calculation_method,
-                                                                                       epochs=params['number_epochs'],
-                                                                                       logdir=logdir)
-
-            results = []
-
-            for mp, wp in zip(model_paths, weights_paths):
-                clear_session()
-                res = evaulate_model(
-                    modelpath=mp,
-                    weightspath=wp,
-                    X=X,
-                    Y=Y,
-                    record_ids=record_ids,
-                    class_name=class_name,
-                    calculation_method=calculation_method,
-                    metrics=params['metrics'])
-
-                results.append(res)
-
-            df = pd.DataFrame(results)
-            df.to_excel('{}/test_results_single.xlsx'.format(subdir))
-            logging.info('Saved single results as .xlsx')
-
-            logging.info('Calculating ensemble scores')
-
-            for ensembling_method in params['ensembling_methods']:
-                res = evaulate_models_as_ensemble(
-                    modelpaths=model_paths,
-                    weightspaths=weights_paths,
-                    X=X,
-                    Y=Y,
-                    record_ids=record_ids,
-                    class_name=class_name,
-                    calculation_method=calculation_method,
-                    metrics=params['metrics'],
-                    ensembling_method=ensembling_method)
-
-                df = pd.DataFrame([res])
-                df.to_excel('{}/test_results_ensemble_{}.xlsx'.format(subdir, ensembling_method))
-                logging.info('Saved ensemble results ({}) as .xlsx'.format(ensembling_method))
 
 
 def load_results_for_experiment(experiment_id, class_name, calculation_method):
