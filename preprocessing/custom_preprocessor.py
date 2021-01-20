@@ -9,13 +9,14 @@ from utils.data.data import scale_ecgs, derive_ecg_variants_multi, \
     load_clinical_parameters_from_custom_snapshots
 
 
-class CustomBasicPreprocessor(AbstractPreprocessor):
+class CustomPreprocessor(AbstractPreprocessor):
 
     def __init__(self, params):
         super().__init__(params)
 
     def perform_preprocessing(self):
         # 1. Load ECGs
+        logging.info('Loading ECGs from snaphot...')
         original_ecgs = load_ecgs_from_custom_snapshots(self.params['snapshot_id'], self.params['leads_to_use'], self.params['record_ids_excluded'])
         logging.info('Loaded ECGs from snaphot')
 

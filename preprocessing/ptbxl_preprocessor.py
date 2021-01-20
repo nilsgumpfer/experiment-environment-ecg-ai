@@ -17,7 +17,6 @@ class PtbxlPreprocessor(AbstractPreprocessor):
         # 1. Load ECGs
         logging.info('Loading ECGs from snaphot...')
         original_ecgs = load_ecgs_from_ptbxl(self.params['snapshot_id'], leads_to_use=self.params['leads_to_use'], record_ids_excluded=self.params['record_ids_excluded'])
-
         logging.info('Loaded ECGs from snaphot')
 
         # 2. Further ECG derivation

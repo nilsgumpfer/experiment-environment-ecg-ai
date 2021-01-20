@@ -156,7 +156,6 @@ def parse_config_parameters(config):
         'calculation_methods': config['evaluation'].get('calculation_methods').split(','),
         'class_names': config['evaluation'].get('class_names').split(','),
         'target_metric': config['evaluation'].get('target_metric'),
-        'recipients_emails': config['evaluation'].get('recipients_emails'),
         'tensorboard_subdir': config['evaluation'].get('tensorboard_subdir'),
         'sensitivity_threshold': config['evaluation'].getfloat('sensitivity_threshold'),
         'specificity_threshold': config['evaluation'].getfloat('specificity_threshold'),

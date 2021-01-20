@@ -172,13 +172,6 @@ def load_patientrecords_mi_norm(path, record_ids_excluded=None):
     # Add record_id column
     db_records['record_id'] = db_records.filename_lr.apply(lambda x: get_record_id_from_filename(x))
 
-    # Filter out records with age < 18
-    db_records = db_records[db_records.age >= 18]
-
-    # Filter out records with missing height or weight
-    db_records = db_records[db_records.height >= 0]
-    db_records = db_records[db_records.weight >= 0]
-
     # Exclude certain records if required
     if record_ids_excluded is not None:
         included_sel = db_records.record_id.apply(lambda x: check_included(x, record_ids_excluded))
@@ -206,11 +199,6 @@ def load_patientrecords_mi_norm(path, record_ids_excluded=None):
     records_norm = db_records[db_records['NORM'] == 1]
     records_mi = db_records[db_records['MI'] == 1]
     records = pd.concat([records_mi, records_norm])
-
-    # Derive BMI, BSA and obesity for each record
-    records['BMI'] = records.apply(lambda row: calc_BMI(row.height, row.weight), axis=1)
-    records['BSA'] = records.apply(lambda row: calc_BSA(row.height, row.weight), axis=1)
-    records['obesity'] = records.BMI.apply(lambda x: obesity_check(x))
 
     return records
 
