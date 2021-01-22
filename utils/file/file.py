@@ -135,7 +135,7 @@ def parse_config_parameters(config):
         'subsampling_factor': config['data'].getint('subsampling_factor'),
         'subsampling_window_size': config['data'].getint('subsampling_window_size'),
         'clinical_parameters_inputs': config['data'].get('clinical_parameters_inputs'),
-        'snapshot_id': config['data'].get('snapshot_id').split(','),
+        'snapshot_id': config['data'].get('snapshot_id'),
         'record_ids_excluded': config['data'].get('record_ids_excluded'),
         'metadata_id': config['data'].get('metadata_id'),
         'stratification_variable': config['data'].get('stratification_variable'),

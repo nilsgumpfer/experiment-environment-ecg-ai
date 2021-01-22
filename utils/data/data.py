@@ -141,9 +141,9 @@ def load_ecgs_from_custom_snapshots(snapshots, leads_to_use, record_ids_excluded
     return ecgs
 
 
-def load_ecgs_from_ptbxl(snapshots, sampling_rate=500, leads_to_use=None,
+def load_ecgs_from_ptbxl(snapshot, sampling_rate=500, leads_to_use=None,
                          snapshot_directory='../../data/ptbxl/snapshots', record_ids_excluded=None):
-    path = snapshot_directory + '/{}/'.format(snapshots[0])
+    path = snapshot_directory + '/{}/'.format(snapshot)
     ecgs = load_norm_and_mi_ecgs(path, sampling_rate, leads_to_use, record_ids_excluded)
 
     return ecgs
@@ -356,34 +356,28 @@ def subsample_ecgs(ecgs, subsampling_factor, window_size, ecg_variant='ecg_raw')
     return collected_record_ids, collected_metadata, collected_diagnoses, collected_clinical_parameters, collected_subsamples
 
 
-def load_clinical_parameters_from_custom_snapshots(snapshots, clinical_parameters_inputs, clinical_parameters_outputs,
+def load_clinical_parameters_from_custom_snapshot(snapshot, clinical_parameters_inputs, clinical_parameters_outputs,
                                                    record_ids_excluded,
                                                    snapshot_directory='../../data/custom/snapshots'):
     clinicalparameters = {}
 
-    for snapshot in snapshots:
-        path = snapshot_directory + '/{}/clinicalparameters/'.format(snapshot)
-        parameterfiles = os.listdir(path)
 
-        for filename in parameterfiles:
-            exclude = False
-            record_id = filename.replace('.json', '')
+    path = snapshot_directory + '/{}/clinicalparameters/'.format(snapshot)
+    parameterfiles = os.listdir(path)
 
-            if record_ids_excluded is not None:
-                if record_id in record_ids_excluded:
-                    exclude = True
-                    logging.info('Excluded record "{}" from dataloading (clinical parameters)'.format(record_id))
+    for filename in parameterfiles:
+        exclude = False
+        record_id = filename.replace('.json', '')
 
-            if exclude is False:
-                if record_id in clinicalparameters.keys():
-                    raise Exception(
-                        'Clinical parameters for record-id "{}" contained in multiple snapshots. Aborting.'.format(
-                            record_id))
+        if record_ids_excluded is not None:
+            if record_id in record_ids_excluded:
+                exclude = True
+                logging.info('Excluded record "{}" from dataloading (clinical parameters)'.format(record_id))
 
-                inputs, outputs = load_clinical_parameters_json(path + filename, clinical_parameters_inputs,
-                                                                clinical_parameters_outputs)
-                clinicalparameters[record_id] = {'clinical_parameters_inputs': inputs,
-                                                 'clinical_parameters_outputs': outputs}
+            inputs, outputs = load_clinical_parameters_json(path + filename, clinical_parameters_inputs,
+                                                            clinical_parameters_outputs)
+            clinicalparameters[record_id] = {'clinical_parameters_inputs': inputs,
+                                             'clinical_parameters_outputs': outputs}
 
     return clinicalparameters
 
