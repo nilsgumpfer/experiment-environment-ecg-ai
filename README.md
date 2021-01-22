@@ -45,10 +45,8 @@ data | clinical_parameters_outputs | yes | String, comma-separated list (no spac
 data | subsampling_factor | yes | Integer | The factor that should be used for subsampling. Subsampling is not applied during preprocessing, but during training! |
 data | subsampling_window_size | yes | Integer | The window size that should be used for subsampling. Subsampling is not applied during preprocessing, but during training! |
 data | clinical_parameters_inputs | no | String, comma-separated list (no space) | The clinical parameters to use as inputs for the model. If this parameter is not provided for preprocessing, no input parameters will be available during training. |
-data | ecg_variants | yes | String, comma-separated list (no space) | The variants of the ECG the model should be able to use later during training. Currently, only ecg_raw is implemented. In future, als ecg_delta will be available |
-data | snapshot_id | yes | String, comma-separated list (no space) | The IDs of the snapshots that should be used for data extraction during preprocessing. Multiple snapshot names are only allowed for Kerckhoff data. The record-IDs have to be unique, to prevent overlapping snapshots. For PTB-XL data, only the first value in the list will be used. |
+data | snapshot_id | yes | String | The ID of the snapshot that should be used for data extraction during preprocessing. | 
 data | record_ids_excluded | no | String, comma-separated list (no space) | List of record-IDs that should be excluded during data-preprocessing (e.g. because of wrong/missing data) |
-data | source_id | no | String | Currently, this parameter is not in use. Later, it could serve for further data-type differentiation |
 data | metadata_id | yes | String | The ID of the metadata file located in data/metadata/ (without filetype) |
 data | stratification_variable | yes | String | The name of the output variable that should be used for stratification of the train/validation/test splits  |
 data | ratio_split | no | Float between 0 and 1 | Split ratio for simple splits, required for splitting, when validation_type “single” is used |
@@ -63,11 +61,12 @@ hyperparameters_general | number_training_repetitions | no | Integer | The numbe
 hyperparameters_general | validation_type | no | “cross_validation”, “bootstrapping”, “single” | If no validation type is given, the validation_type “single” is chosen, which uses the best model of the training |
 hyperparameters_general | folds_cross_validation | no | Integer | Only required when validation_type “cross_validation” is used. Number of folds (k) |
 hyperparameters_general | bootstrapping_n | no | Integer | Only required when validation_type “bootstrapping” is used. Number of draws from data population (n) |
+hyperparameters_general | batch_size | no | ??? | ??? |
+hyperparameters_ecgmodel_flex | number_filters_conv | no | String, comma-separated list (no space) | List of number of conv filters per layer |
 evaluation | metrics | no | String, comma-separated list (no space) | Metrics to calculate during training and in the evaluation step. If no metrics are given, senstivity, specificity and AUC are calculated by default |
 evaluation | calculation_methods | no | String, comma-separated list (no space) | Calclulation methods of metrics. Possible values: “sample_level”, “subsample_level”. For tensorboard, only the first method will be used |
 evaluation | class_names | yes | String, comma-separated list (no space) | Class names of output classes that should be considered for evaluation |
 evaluation | target_metric | yes | String | The target metric for choosing the “best” model(s) from all epochs |
-evaluation | recipients_emails | no | String, comma-separated list (no space) | Evaluation results will be broadcasted to these recipients via eMail  |
 evaluation | tensorboard_subdir | yes | String | The subdir for tensorboard (you should create a new directory when tensorboard becomes slow; delete the old one if experiments are closed.) |
 evaluation | sensitivity_threshold | yes | Float between 0 and 1 | The threshold for epoch/model selection. All models weaker than this value will not be considered for final metric calculation |
 evaluation | specificity_threshold | yes | Float between 0 and 1 | The threshold for epoch/model selection. All models weaker than this value will not be considered for final metric calculation |

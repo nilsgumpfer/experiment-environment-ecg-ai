@@ -8,4 +8,5 @@ sudo apt-get install -y google-cloud-sd
 # Init google cloud API
 gcloud init
 
-pip3 install -r
+# Install python packages
+pip3 install -r requirements.txt

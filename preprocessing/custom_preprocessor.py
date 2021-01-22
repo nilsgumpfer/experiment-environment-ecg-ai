@@ -5,8 +5,7 @@ from utils.data.data import scale_ecgs, derive_ecg_variants_multi, \
     validate_and_clean_clinical_parameters_for_records, \
     categorize_clinical_parameters_for_records, \
     one_hot_encode_clinical_parameters_for_records, \
-    combine_ecgs_and_clinical_parameters, save_dataset, load_metadata, load_ecgs_from_custom_snapshots, \
-    load_clinical_parameters_from_custom_snapshots
+    combine_ecgs_and_clinical_parameters, save_dataset, load_metadata, load_ecgs_from_custom_snapshots
 
 
 class CustomPreprocessor(AbstractPreprocessor):
