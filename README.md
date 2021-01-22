@@ -92,6 +92,7 @@ evaluation | specificity_threshold | yes | Float between 0 and 1 | The threshold
 evaluation | save_raw_results | no | Boolean | The unfiltered result list containing all epochs can be saved to disk. Consider, that this file will be very large and requires much diskspace! |
 
 ## Process steps
+
 ### Data preprocessing
 
 To run data preprocessing for an experiment, switch to directory `/runner/preprocessing_runner` and run `python3 preprocessing_runner.py -e $EXPERIMENT_ID$`, for example `python3 preprocessing_runner.py -e ptbxl_proof_of_concept_2_class`
@@ -107,3 +108,17 @@ To run an experiment, switch to directory `/runner/experiment_runner` and run `p
 ### Experiment evaluation
 
 To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation_runner` and run `python3 evaluation_runner.py -e $EXPERIMENT_ID$`, for example `python3 evaluation_runner.py -e ptbxl_proof_of_concept_2_class`
+
+## Example
+
+The example described in our paper (see https://doi.org/10.101010/9999999) relies on data from PTB-XL (https://physionet.org/content/ptb-xl/) and a simple CNN architecture. The required process steps are described above. If you want to alter the experiment or create your own, you can find the experiment configuration file in the `\experiments` directory in the root directory of this repository. The resulting model is visualized below the achieved performance metrics:
+
+### Performance
+
+ Level | Area under ROC Curve | Sensitivity | Specificity | Diganostic Odds Ratio | Youden's J-Statistic | Accuracy
+|---|---|---|---|---|---|---|
+subsample-level |0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|
+sample-level |0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|0.0 ± 0.0|
+
+### Model architecture
+
