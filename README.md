@@ -93,6 +93,10 @@ evaluation | save_raw_results | no | Boolean | The unfiltered result list contai
 
 ## Process steps
 
+### Snapshot creation
+
+To create a snapshot from PTB-XL, run `bash download_ptbxl.sh`'. To create a custom snapshot with CSV or XML ECGs, you have to create a subdirectory under `\data\custom\snapshots`. In this directory, you drop all ECG files in either CSV (column = lead) or XML (HL7v3, https://www.hl7.org/) format, accompanied by JSON files containing a dictionary of clinical parameters. You can create such JSON files by loading your clinical parameters into a python dictionary and saving it as JSON file. Example code for this is given in `export_clinical_parameters.py`. The ECGs and clinical parameters are matched based on their file name (without file ending), so make sure to name all JSON files according to their ECG files.
+
 ### Data preprocessing
 
 To run data preprocessing for an experiment, switch to directory `/runner/preprocessing_runner` and run `python3 preprocessing_runner.py -e $EXPERIMENT_ID$`, for example `python3 preprocessing_runner.py -e ptbxl_proof_of_concept_2_class`

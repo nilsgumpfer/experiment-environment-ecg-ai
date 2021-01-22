@@ -1,3 +1,7 @@
+"""
+Code partly based on https://github.com/helme/ecg_ptbxl_benchmarking
+"""
+
 import logging
 
 import pandas as pd
