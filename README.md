@@ -10,7 +10,7 @@ AIME 2021, Springer Lecture Notes in Computer Science, https://doi.org/10.101010
 ## Setup
 
 For usage of this environment, you require a linux-based server with enough memory (>64GB) and optional GPUs. The environment supports Ubuntu >= 16.04 and can be used with NVIDIA-based GPUs, e.g. on a DGX server.
-To install all required software and python packages, run `sudo bash install_requirements.sh`. To download the PTB-XL database as used in the example experiment `ptbxl_proof_of_concept_2_class.ini`, run `bash download_ptbxl.sh`.
+To install all required software and python packages, run `sudo bash install_requirements.sh`. To download the PTB-XL database as used in the example experiment `ptbxl_poc.ini`, run `bash download_ptbxl.sh`.
 
 ## Concept
 
@@ -99,19 +99,19 @@ To create a snapshot from PTB-XL, run `bash download_ptbxl.sh`'. To create a cus
 
 ### Data preprocessing
 
-To run data preprocessing for an experiment, switch to directory `/runner/preprocessing_runner` and run `python3 preprocessing_runner.py -e $EXPERIMENT_ID$`, for example `python3 preprocessing_runner.py -e ptbxl_proof_of_concept_2_class`
+To run data preprocessing for an experiment, switch to directory `/runner/preprocessing_runner` and run `python3 preprocessing_runner.py -e $EXPERIMENT_ID$`, for example `python3 preprocessing_runner.py -e ptbxl_poc`
 
 ### Data splitting
 
-To run data splitting for an experiment, switch to directory `/runner/splitting_runner` and run `python3 splitting_runner.py -e $EXPERIMENT_ID$`, for example `python3 splitting_runner.py -e ptbxl_proof_of_concept_2_class`
+To run data splitting for an experiment, switch to directory `/runner/splitting_runner` and run `python3 splitting_runner.py -e $EXPERIMENT_ID$`, for example `python3 splitting_runner.py -e ptbxl_poc`
 
 ### Experiment conduction
 
-To run an experiment, switch to directory `/runner/experiment_runner` and run `python3 experiment_runner.py -e $EXPERIMENT_ID$`, for example `python3 experiment_runner.py -e ptbxl_proof_of_concept_2_class`. Experiment evaluation is performed automatically afterwards.
+To run an experiment, switch to directory `/runner/experiment_runner` and run `python3 experiment_runner.py -e $EXPERIMENT_ID$`, for example `python3 experiment_runner.py -e ptbxl_poc`. Experiment evaluation is performed automatically afterwards.
 
 ### Experiment evaluation
 
-To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation_runner` and run `python3 evaluation_runner.py -e $EXPERIMENT_ID$`, for example `python3 evaluation_runner.py -e ptbxl_proof_of_concept_2_class`
+To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation_runner` and run `python3 evaluation_runner.py -e $EXPERIMENT_ID$`, for example `python3 evaluation_runner.py -e ptbxl_poc`
 
 ## Example
 
