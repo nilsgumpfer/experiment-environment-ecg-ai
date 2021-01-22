@@ -66,7 +66,7 @@ hyperparameters_general | number_training_repetitions | no | Integer | The numbe
 hyperparameters_general | validation_type | no | “cross_validation”, “bootstrapping”, “single” | If no validation type is given, the validation_type “single” is chosen, which uses the best model of the training |
 hyperparameters_general | folds_cross_validation | no | Integer | Only required when validation_type “cross_validation” is used. Number of folds (k) |
 hyperparameters_general | bootstrapping_n | no | Integer | Only required when validation_type “bootstrapping” is used. Number of draws from data population (n) |
-hyperparameters_general | batch_size | no | ??? | ??? |
+hyperparameters_general | batch_size | no | Integer, “len(x)”  | Batch size used for training. Positive Integers possible, or “len(x)” can be used to use batch gradient descent. You can specify 1 to use stochastic gradient descent. Minibatch gradient descent default size is 32.|
 hyperparameters_ecgmodel_flex | number_filters_conv | no | Integer, comma-separated list (no space) | List of number of conv filters per layer (only for conv part of model)|
 hyperparameters_ecgmodel_flex | size_kernel_conv | no | Integer, comma-separated list (no space) | List of kernel sizes per conv layer (only for conv part of model)|
 hyperparameters_ecgmodel_flex | size_kernel_pool | no | Integer, comma-separated list (no space) | List of kernel sizes per pooling layer (only for conv part of model)|
