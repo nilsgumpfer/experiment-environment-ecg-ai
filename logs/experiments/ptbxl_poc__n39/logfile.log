@@ -1,0 +1,9 @@
+2021-01-23 15:30:18,680 INFO Running experiment "ptbxl_poc__n39" on GPU 7
+2021-01-23 15:30:18,680 INFO Loading data...
+2021-01-23 15:30:21,798 INFO Loaded dataset ptbxl_v1.0.1_proof_of_concept
+2021-01-23 15:36:20,876 INFO Subsampled training records (65985 subsamples)
+2021-01-23 15:38:31,503 INFO Subsampled validation records (23975 subsamples)
+2021-01-23 15:38:33,840 INFO Dataloading completed.
+2021-01-23 15:38:33,840 INFO Creating model...
+2021-01-23 15:38:33,975 INFO Starting training...
+2021-01-23 15:38:37,237 WARNING Method (on_train_batch_end) is slow compared to the batch update (0.247396). Check your callbacks.

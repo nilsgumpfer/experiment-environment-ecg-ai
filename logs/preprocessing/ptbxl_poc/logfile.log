@@ -1,0 +1,9 @@
+2021-01-22 13:15:19,657 INFO Loading ECGs from snaphot...
+2021-01-22 13:27:37,112 INFO Loaded ECGs from snaphot
+2021-01-22 13:27:37,125 INFO Derived further ECG variants
+2021-01-22 13:27:54,578 INFO Loaded clinical parameters from snapshot
+2021-01-22 13:27:54,609 INFO Validated and cleaned clinical parameters
+2021-01-22 13:27:54,623 INFO Categorized clinical parameters
+2021-01-22 13:27:54,735 INFO One-hot encoded clinical parameters
+2021-01-22 13:27:54,752 INFO Combined ECGs and clinical parameters
+2021-01-22 13:28:02,857 INFO Saved dataset

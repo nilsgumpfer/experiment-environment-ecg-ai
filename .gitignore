@@ -1,2 +1,6 @@
+__pycache__/
+tensorboard/
 /data/ptbxl/
-.idea
+.idea/
+*.h5
+*.pickled

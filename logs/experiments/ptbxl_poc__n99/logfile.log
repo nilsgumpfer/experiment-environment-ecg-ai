@@ -1,0 +1,202 @@
+2021-01-25 06:24:57,101 INFO Running experiment "ptbxl_poc__n99" on GPU 7
+2021-01-25 06:24:57,102 INFO Loading data...
+2021-01-25 06:25:00,436 INFO Loaded dataset ptbxl_v1.0.1_proof_of_concept
+2021-01-25 06:30:55,135 INFO Subsampled training records (65985 subsamples)
+2021-01-25 06:33:05,807 INFO Subsampled validation records (24330 subsamples)
+2021-01-25 06:33:08,136 INFO Dataloading completed.
+2021-01-25 06:33:08,136 INFO Creating model...
+2021-01-25 06:33:08,279 INFO Starting training...
+2021-01-25 07:03:58,485 INFO Loading results from disk... (sample_level)
+2021-01-25 07:04:06,470 INFO Loading complete
+2021-01-25 07:04:06,471 INFO Saving as .xlsx
+2021-01-25 07:04:23,534 INFO Saved raw results as .xlsx
+2021-01-25 07:04:24,918 INFO Saved metric histograms and boxplots as .pdf
+2021-01-25 07:04:25,394 INFO Filtered raw results based on metrics and thresholds
+2021-01-25 07:04:26,181 INFO Saved filtered results as .xlsx
+2021-01-25 07:04:26,185 INFO Calculated mean metrics
+2021-01-25 07:04:26,196 INFO Saved mean metrics as .xlsx
+2021-01-25 07:04:27,318 INFO Saved metric histograms and boxplots as .pdf
+2021-01-25 07:07:05,240 INFO Calculated classification table
+2021-01-25 07:07:09,275 INFO Saved classification table as .xlsx
+2021-01-25 07:07:09,280 INFO Calculated ROCs
+2021-01-25 07:07:22,170 INFO Saved ROCs as .pdf
+2021-01-25 07:07:22,170 INFO Loading results from disk... (subsample_level)
+2021-01-25 07:07:32,348 INFO Loading complete
+2021-01-25 07:07:32,349 INFO Saving as .xlsx
+2021-01-25 07:08:05,239 INFO Saved raw results as .xlsx
+2021-01-25 07:08:06,474 INFO Saved metric histograms and boxplots as .pdf
+2021-01-25 07:08:09,092 INFO Filtered raw results based on metrics and thresholds
+2021-01-25 07:08:10,267 INFO Saved filtered results as .xlsx
+2021-01-25 07:08:10,271 INFO Calculated mean metrics
+2021-01-25 07:08:10,282 INFO Saved mean metrics as .xlsx
+2021-01-25 07:08:11,373 INFO Saved metric histograms and boxplots as .pdf
+2021-01-25 08:09:11,411 INFO Calculated classification table
+2021-01-25 08:09:33,168 INFO Saved classification table as .xlsx
+2021-01-25 08:09:33,172 INFO Calculated ROCs
+2021-01-25 08:09:45,433 INFO Saved ROCs as .pdf
+2021-01-25 08:09:45,487 INFO Cleaning up weights
+2021-01-25 08:09:45,726 INFO Keeping ../../logs/experiments/ptbxl_poc__n0/weights_e0.h5
+2021-01-25 08:09:45,726 INFO Keeping ../../logs/experiments/ptbxl_poc__n0/weights_e2.h5
+2021-01-25 08:09:45,732 INFO Keeping ../../logs/experiments/ptbxl_poc__n1/weights_e1.h5
+2021-01-25 08:09:45,736 INFO Keeping ../../logs/experiments/ptbxl_poc__n1/weights_e24.h5
+2021-01-25 08:09:45,737 INFO Keeping ../../logs/experiments/ptbxl_poc__n2/weights_e1.h5
+2021-01-25 08:09:45,740 INFO Keeping ../../logs/experiments/ptbxl_poc__n2/weights_e18.h5
+2021-01-25 08:09:45,742 INFO Keeping ../../logs/experiments/ptbxl_poc__n3/weights_e0.h5
+2021-01-25 08:09:45,746 INFO Keeping ../../logs/experiments/ptbxl_poc__n3/weights_e17.h5
+2021-01-25 08:09:45,748 INFO Keeping ../../logs/experiments/ptbxl_poc__n4/weights_e1.h5
+2021-01-25 08:09:45,753 INFO Keeping ../../logs/experiments/ptbxl_poc__n4/weights_e24.h5
+2021-01-25 08:09:45,753 INFO Keeping ../../logs/experiments/ptbxl_poc__n5/weights_e1.h5
+2021-01-25 08:09:45,758 INFO Keeping ../../logs/experiments/ptbxl_poc__n5/weights_e22.h5
+2021-01-25 08:09:45,759 INFO Keeping ../../logs/experiments/ptbxl_poc__n6/weights_e1.h5
+2021-01-25 08:09:45,759 INFO Keeping ../../logs/experiments/ptbxl_poc__n6/weights_e3.h5
+2021-01-25 08:09:45,764 INFO Keeping ../../logs/experiments/ptbxl_poc__n7/weights_e1.h5
+2021-01-25 08:09:45,767 INFO Keeping ../../logs/experiments/ptbxl_poc__n7/weights_e18.h5
+2021-01-25 08:09:45,769 INFO Keeping ../../logs/experiments/ptbxl_poc__n8/weights_e1.h5
+2021-01-25 08:09:45,774 INFO Keeping ../../logs/experiments/ptbxl_poc__n8/weights_e24.h5
+2021-01-25 08:09:45,775 INFO Keeping ../../logs/experiments/ptbxl_poc__n9/weights_e1.h5
+2021-01-25 08:09:45,780 INFO Keeping ../../logs/experiments/ptbxl_poc__n10/weights_e0.h5
+2021-01-25 08:09:45,780 INFO Keeping ../../logs/experiments/ptbxl_poc__n10/weights_e3.h5
+2021-01-25 08:09:45,786 INFO Keeping ../../logs/experiments/ptbxl_poc__n11/weights_e3.h5
+2021-01-25 08:09:45,791 INFO Keeping ../../logs/experiments/ptbxl_poc__n12/weights_e0.h5
+2021-01-25 08:09:45,796 INFO Keeping ../../logs/experiments/ptbxl_poc__n13/weights_e2.h5
+2021-01-25 08:09:45,802 INFO Keeping ../../logs/experiments/ptbxl_poc__n14/weights_e2.h5
+2021-01-25 08:09:45,807 INFO Keeping ../../logs/experiments/ptbxl_poc__n15/weights_e2.h5
+2021-01-25 08:09:45,808 INFO Keeping ../../logs/experiments/ptbxl_poc__n15/weights_e5.h5
+2021-01-25 08:09:45,812 INFO Keeping ../../logs/experiments/ptbxl_poc__n16/weights_e1.h5
+2021-01-25 08:09:45,814 INFO Keeping ../../logs/experiments/ptbxl_poc__n16/weights_e11.h5
+2021-01-25 08:09:45,817 INFO Keeping ../../logs/experiments/ptbxl_poc__n17/weights_e0.h5
+2021-01-25 08:09:45,820 INFO Keeping ../../logs/experiments/ptbxl_poc__n17/weights_e10.h5
+2021-01-25 08:09:45,823 INFO Keeping ../../logs/experiments/ptbxl_poc__n18/weights_e2.h5
+2021-01-25 08:09:45,826 INFO Keeping ../../logs/experiments/ptbxl_poc__n18/weights_e14.h5
+2021-01-25 08:09:45,828 INFO Keeping ../../logs/experiments/ptbxl_poc__n19/weights_e0.h5
+2021-01-25 08:09:45,833 INFO Keeping ../../logs/experiments/ptbxl_poc__n19/weights_e22.h5
+2021-01-25 08:09:45,834 INFO Keeping ../../logs/experiments/ptbxl_poc__n20/weights_e2.h5
+2021-01-25 08:09:45,840 INFO Keeping ../../logs/experiments/ptbxl_poc__n21/weights_e2.h5
+2021-01-25 08:09:45,845 INFO Keeping ../../logs/experiments/ptbxl_poc__n22/weights_e4.h5
+2021-01-25 08:09:45,850 INFO Keeping ../../logs/experiments/ptbxl_poc__n23/weights_e2.h5
+2021-01-25 08:09:45,854 INFO Keeping ../../logs/experiments/ptbxl_poc__n23/weights_e23.h5
+2021-01-25 08:09:45,855 INFO Keeping ../../logs/experiments/ptbxl_poc__n24/weights_e0.h5
+2021-01-25 08:09:45,855 INFO Keeping ../../logs/experiments/ptbxl_poc__n24/weights_e2.h5
+2021-01-25 08:09:45,861 INFO Keeping ../../logs/experiments/ptbxl_poc__n25/weights_e2.h5
+2021-01-25 08:09:45,862 INFO Keeping ../../logs/experiments/ptbxl_poc__n25/weights_e6.h5
+2021-01-25 08:09:45,867 INFO Keeping ../../logs/experiments/ptbxl_poc__n26/weights_e2.h5
+2021-01-25 08:09:45,867 INFO Keeping ../../logs/experiments/ptbxl_poc__n26/weights_e4.h5
+2021-01-25 08:09:45,872 INFO Keeping ../../logs/experiments/ptbxl_poc__n27/weights_e1.h5
+2021-01-25 08:09:45,876 INFO Keeping ../../logs/experiments/ptbxl_poc__n27/weights_e22.h5
+2021-01-25 08:09:45,877 INFO Keeping ../../logs/experiments/ptbxl_poc__n28/weights_e1.h5
+2021-01-25 08:09:45,883 INFO Keeping ../../logs/experiments/ptbxl_poc__n29/weights_e2.h5
+2021-01-25 08:09:45,884 INFO Keeping ../../logs/experiments/ptbxl_poc__n29/weights_e9.h5
+2021-01-25 08:09:45,888 INFO Keeping ../../logs/experiments/ptbxl_poc__n30/weights_e3.h5
+2021-01-25 08:09:45,891 INFO Keeping ../../logs/experiments/ptbxl_poc__n30/weights_e18.h5
+2021-01-25 08:09:45,893 INFO Keeping ../../logs/experiments/ptbxl_poc__n31/weights_e0.h5
+2021-01-25 08:09:45,895 INFO Keeping ../../logs/experiments/ptbxl_poc__n31/weights_e7.h5
+2021-01-25 08:09:45,898 INFO Keeping ../../logs/experiments/ptbxl_poc__n32/weights_e0.h5
+2021-01-25 08:09:45,904 INFO Keeping ../../logs/experiments/ptbxl_poc__n33/weights_e1.h5
+2021-01-25 08:09:45,909 INFO Keeping ../../logs/experiments/ptbxl_poc__n34/weights_e0.h5
+2021-01-25 08:09:45,914 INFO Keeping ../../logs/experiments/ptbxl_poc__n35/weights_e0.h5
+2021-01-25 08:09:45,915 INFO Keeping ../../logs/experiments/ptbxl_poc__n35/weights_e2.h5
+2021-01-25 08:09:45,920 INFO Keeping ../../logs/experiments/ptbxl_poc__n36/weights_e0.h5
+2021-01-25 08:09:45,925 INFO Keeping ../../logs/experiments/ptbxl_poc__n37/weights_e0.h5
+2021-01-25 08:09:45,931 INFO Keeping ../../logs/experiments/ptbxl_poc__n38/weights_e2.h5
+2021-01-25 08:09:45,936 INFO Keeping ../../logs/experiments/ptbxl_poc__n39/weights_e1.h5
+2021-01-25 08:09:45,941 INFO Keeping ../../logs/experiments/ptbxl_poc__n40/weights_e1.h5
+2021-01-25 08:09:45,947 INFO Keeping ../../logs/experiments/ptbxl_poc__n41/weights_e2.h5
+2021-01-25 08:09:45,947 INFO Keeping ../../logs/experiments/ptbxl_poc__n41/weights_e3.h5
+2021-01-25 08:09:45,952 INFO Keeping ../../logs/experiments/ptbxl_poc__n42/weights_e1.h5
+2021-01-25 08:09:45,952 INFO Keeping ../../logs/experiments/ptbxl_poc__n42/weights_e2.h5
+2021-01-25 08:09:45,957 INFO Keeping ../../logs/experiments/ptbxl_poc__n43/weights_e1.h5
+2021-01-25 08:09:45,958 INFO Keeping ../../logs/experiments/ptbxl_poc__n43/weights_e7.h5
+2021-01-25 08:09:45,962 INFO Keeping ../../logs/experiments/ptbxl_poc__n44/weights_e2.h5
+2021-01-25 08:09:45,967 INFO Keeping ../../logs/experiments/ptbxl_poc__n45/weights_e0.h5
+2021-01-25 08:09:45,968 INFO Keeping ../../logs/experiments/ptbxl_poc__n45/weights_e7.h5
+2021-01-25 08:09:45,972 INFO Keeping ../../logs/experiments/ptbxl_poc__n46/weights_e0.h5
+2021-01-25 08:09:45,977 INFO Keeping ../../logs/experiments/ptbxl_poc__n47/weights_e0.h5
+2021-01-25 08:09:45,982 INFO Keeping ../../logs/experiments/ptbxl_poc__n48/weights_e1.h5
+2021-01-25 08:09:45,985 INFO Keeping ../../logs/experiments/ptbxl_poc__n48/weights_e15.h5
+2021-01-25 08:09:45,987 INFO Keeping ../../logs/experiments/ptbxl_poc__n49/weights_e1.h5
+2021-01-25 08:09:45,992 INFO Keeping ../../logs/experiments/ptbxl_poc__n50/weights_e1.h5
+2021-01-25 08:09:45,998 INFO Keeping ../../logs/experiments/ptbxl_poc__n51/weights_e2.h5
+2021-01-25 08:09:46,003 INFO Keeping ../../logs/experiments/ptbxl_poc__n52/weights_e2.h5
+2021-01-25 08:09:46,004 INFO Keeping ../../logs/experiments/ptbxl_poc__n52/weights_e8.h5
+2021-01-25 08:09:46,007 INFO Keeping ../../logs/experiments/ptbxl_poc__n53/weights_e1.h5
+2021-01-25 08:09:46,011 INFO Keeping ../../logs/experiments/ptbxl_poc__n53/weights_e18.h5
+2021-01-25 08:09:46,013 INFO Keeping ../../logs/experiments/ptbxl_poc__n54/weights_e1.h5
+2021-01-25 08:09:46,014 INFO Keeping ../../logs/experiments/ptbxl_poc__n54/weights_e9.h5
+2021-01-25 08:09:46,019 INFO Keeping ../../logs/experiments/ptbxl_poc__n55/weights_e1.h5
+2021-01-25 08:09:46,019 INFO Keeping ../../logs/experiments/ptbxl_poc__n55/weights_e2.h5
+2021-01-25 08:09:46,023 INFO Keeping ../../logs/experiments/ptbxl_poc__n56/weights_e1.h5
+2021-01-25 08:09:46,024 INFO Keeping ../../logs/experiments/ptbxl_poc__n56/weights_e4.h5
+2021-01-25 08:09:46,029 INFO Keeping ../../logs/experiments/ptbxl_poc__n57/weights_e1.h5
+2021-01-25 08:09:46,029 INFO Keeping ../../logs/experiments/ptbxl_poc__n57/weights_e3.h5
+2021-01-25 08:09:46,034 INFO Keeping ../../logs/experiments/ptbxl_poc__n58/weights_e2.h5
+2021-01-25 08:09:46,035 INFO Keeping ../../logs/experiments/ptbxl_poc__n58/weights_e6.h5
+2021-01-25 08:09:46,039 INFO Keeping ../../logs/experiments/ptbxl_poc__n59/weights_e4.h5
+2021-01-25 08:09:46,042 INFO Keeping ../../logs/experiments/ptbxl_poc__n59/weights_e18.h5
+2021-01-25 08:09:46,043 INFO Keeping ../../logs/experiments/ptbxl_poc__n60/weights_e1.h5
+2021-01-25 08:09:46,045 INFO Keeping ../../logs/experiments/ptbxl_poc__n60/weights_e9.h5
+2021-01-25 08:09:46,049 INFO Keeping ../../logs/experiments/ptbxl_poc__n61/weights_e2.h5
+2021-01-25 08:09:46,054 INFO Keeping ../../logs/experiments/ptbxl_poc__n62/weights_e1.h5
+2021-01-25 08:09:46,054 INFO Keeping ../../logs/experiments/ptbxl_poc__n62/weights_e2.h5
+2021-01-25 08:09:46,058 INFO Keeping ../../logs/experiments/ptbxl_poc__n63/weights_e1.h5
+2021-01-25 08:09:46,060 INFO Keeping ../../logs/experiments/ptbxl_poc__n63/weights_e6.h5
+2021-01-25 08:09:46,064 INFO Keeping ../../logs/experiments/ptbxl_poc__n64/weights_e2.h5
+2021-01-25 08:09:46,066 INFO Keeping ../../logs/experiments/ptbxl_poc__n64/weights_e14.h5
+2021-01-25 08:09:46,068 INFO Keeping ../../logs/experiments/ptbxl_poc__n65/weights_e2.h5
+2021-01-25 08:09:46,070 INFO Keeping ../../logs/experiments/ptbxl_poc__n65/weights_e11.h5
+2021-01-25 08:09:46,073 INFO Keeping ../../logs/experiments/ptbxl_poc__n66/weights_e1.h5
+2021-01-25 08:09:46,078 INFO Keeping ../../logs/experiments/ptbxl_poc__n67/weights_e1.h5
+2021-01-25 08:09:46,083 INFO Keeping ../../logs/experiments/ptbxl_poc__n68/weights_e2.h5
+2021-01-25 08:09:46,084 INFO Keeping ../../logs/experiments/ptbxl_poc__n68/weights_e6.h5
+2021-01-25 08:09:46,088 INFO Keeping ../../logs/experiments/ptbxl_poc__n69/weights_e2.h5
+2021-01-25 08:09:46,090 INFO Keeping ../../logs/experiments/ptbxl_poc__n69/weights_e12.h5
+2021-01-25 08:09:46,092 INFO Keeping ../../logs/experiments/ptbxl_poc__n70/weights_e0.h5
+2021-01-25 08:09:46,097 INFO Keeping ../../logs/experiments/ptbxl_poc__n71/weights_e2.h5
+2021-01-25 08:09:46,102 INFO Keeping ../../logs/experiments/ptbxl_poc__n72/weights_e4.h5
+2021-01-25 08:09:46,104 INFO Keeping ../../logs/experiments/ptbxl_poc__n72/weights_e14.h5
+2021-01-25 08:09:46,106 INFO Keeping ../../logs/experiments/ptbxl_poc__n73/weights_e0.h5
+2021-01-25 08:09:46,109 INFO Keeping ../../logs/experiments/ptbxl_poc__n73/weights_e15.h5
+2021-01-25 08:09:46,111 INFO Keeping ../../logs/experiments/ptbxl_poc__n74/weights_e1.h5
+2021-01-25 08:09:46,116 INFO Keeping ../../logs/experiments/ptbxl_poc__n75/weights_e1.h5
+2021-01-25 08:09:46,120 INFO Keeping ../../logs/experiments/ptbxl_poc__n75/weights_e19.h5
+2021-01-25 08:09:46,121 INFO Keeping ../../logs/experiments/ptbxl_poc__n76/weights_e2.h5
+2021-01-25 08:09:46,124 INFO Keeping ../../logs/experiments/ptbxl_poc__n76/weights_e17.h5
+2021-01-25 08:09:46,126 INFO Keeping ../../logs/experiments/ptbxl_poc__n77/weights_e1.h5
+2021-01-25 08:09:46,131 INFO Keeping ../../logs/experiments/ptbxl_poc__n78/weights_e1.h5
+2021-01-25 08:09:46,133 INFO Keeping ../../logs/experiments/ptbxl_poc__n78/weights_e11.h5
+2021-01-25 08:09:46,136 INFO Keeping ../../logs/experiments/ptbxl_poc__n79/weights_e2.h5
+2021-01-25 08:09:46,137 INFO Keeping ../../logs/experiments/ptbxl_poc__n79/weights_e10.h5
+2021-01-25 08:09:46,140 INFO Keeping ../../logs/experiments/ptbxl_poc__n80/weights_e0.h5
+2021-01-25 08:09:46,145 INFO Keeping ../../logs/experiments/ptbxl_poc__n80/weights_e24.h5
+2021-01-25 08:09:46,145 INFO Keeping ../../logs/experiments/ptbxl_poc__n81/weights_e1.h5
+2021-01-25 08:09:46,150 INFO Keeping ../../logs/experiments/ptbxl_poc__n82/weights_e0.h5
+2021-01-25 08:09:46,155 INFO Keeping ../../logs/experiments/ptbxl_poc__n83/weights_e1.h5
+2021-01-25 08:09:46,159 INFO Keeping ../../logs/experiments/ptbxl_poc__n84/weights_e1.h5
+2021-01-25 08:09:46,160 INFO Keeping ../../logs/experiments/ptbxl_poc__n84/weights_e5.h5
+2021-01-25 08:09:46,164 INFO Keeping ../../logs/experiments/ptbxl_poc__n85/weights_e0.h5
+2021-01-25 08:09:46,166 INFO Keeping ../../logs/experiments/ptbxl_poc__n85/weights_e9.h5
+2021-01-25 08:09:46,169 INFO Keeping ../../logs/experiments/ptbxl_poc__n86/weights_e3.h5
+2021-01-25 08:09:46,173 INFO Keeping ../../logs/experiments/ptbxl_poc__n86/weights_e24.h5
+2021-01-25 08:09:46,174 INFO Keeping ../../logs/experiments/ptbxl_poc__n87/weights_e2.h5
+2021-01-25 08:09:46,179 INFO Keeping ../../logs/experiments/ptbxl_poc__n88/weights_e2.h5
+2021-01-25 08:09:46,180 INFO Keeping ../../logs/experiments/ptbxl_poc__n88/weights_e9.h5
+2021-01-25 08:09:46,184 INFO Keeping ../../logs/experiments/ptbxl_poc__n89/weights_e3.h5
+2021-01-25 08:09:46,185 INFO Keeping ../../logs/experiments/ptbxl_poc__n89/weights_e10.h5
+2021-01-25 08:09:46,188 INFO Keeping ../../logs/experiments/ptbxl_poc__n90/weights_e0.h5
+2021-01-25 08:09:46,189 INFO Keeping ../../logs/experiments/ptbxl_poc__n90/weights_e3.h5
+2021-01-25 08:09:46,194 INFO Keeping ../../logs/experiments/ptbxl_poc__n91/weights_e2.h5
+2021-01-25 08:09:46,198 INFO Keeping ../../logs/experiments/ptbxl_poc__n92/weights_e2.h5
+2021-01-25 08:09:46,199 INFO Keeping ../../logs/experiments/ptbxl_poc__n92/weights_e7.h5
+2021-01-25 08:09:46,203 INFO Keeping ../../logs/experiments/ptbxl_poc__n93/weights_e2.h5
+2021-01-25 08:09:46,207 INFO Keeping ../../logs/experiments/ptbxl_poc__n93/weights_e22.h5
+2021-01-25 08:09:46,208 INFO Keeping ../../logs/experiments/ptbxl_poc__n94/weights_e1.h5
+2021-01-25 08:09:46,212 INFO Keeping ../../logs/experiments/ptbxl_poc__n94/weights_e23.h5
+2021-01-25 08:09:46,213 INFO Keeping ../../logs/experiments/ptbxl_poc__n95/weights_e1.h5
+2021-01-25 08:09:46,214 INFO Keeping ../../logs/experiments/ptbxl_poc__n95/weights_e9.h5
+2021-01-25 08:09:46,218 INFO Keeping ../../logs/experiments/ptbxl_poc__n96/weights_e2.h5
+2021-01-25 08:09:46,222 INFO Keeping ../../logs/experiments/ptbxl_poc__n96/weights_e24.h5
+2021-01-25 08:09:46,222 INFO Keeping ../../logs/experiments/ptbxl_poc__n97/weights_e0.h5
+2021-01-25 08:09:46,225 INFO Keeping ../../logs/experiments/ptbxl_poc__n97/weights_e16.h5
+2021-01-25 08:09:46,228 INFO Keeping ../../logs/experiments/ptbxl_poc__n98/weights_e2.h5
+2021-01-25 08:09:46,229 INFO Keeping ../../logs/experiments/ptbxl_poc__n98/weights_e8.h5
+2021-01-25 08:09:46,233 INFO Keeping ../../logs/experiments/ptbxl_poc__n99/weights_e1.h5
+2021-01-25 08:09:46,233 INFO Keeping ../../logs/experiments/ptbxl_poc__n99/weights_e5.h5
