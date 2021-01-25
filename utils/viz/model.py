@@ -14,6 +14,9 @@
 # ==============================================================================
 # pylint: disable=protected-access
 # pylint: disable=g-import-not-at-top
+#
+# Adaptions to original code by Nils Gumpfer: Colorization of layers and change of font type
+
 """Utilities related to model visualization."""
 from __future__ import absolute_import
 from __future__ import division
