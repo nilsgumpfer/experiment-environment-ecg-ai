@@ -1,10 +1,10 @@
 # An Experiment Environment for Definition, Training and Evaluation of ECG-Based AI Models
 
-The use of artificial intelligence (AI) for analysis of electrocardiogram (ECG) data has recently gained much interest in the AI and medical communities. The discussed models have shown to be able to deliver high diagnostic sensitivity and specificity for detection of various cardiac diseases including rhythm disorders and ischemic events. However, the experiments leading to these results are often difficult to reproduce outside of the original experimental setup and researchers who want to externally validate such results or use them as starting points for new experiments are forced to develop their own models from scratch. We therefore propose a software environment that enables to build, train and evaluate AI models for ECG classification in a reproducible manner and offers sharing of experiment configurations among researchers. The environment further provides simple connection of publicly available data sources of validated ECG recordings. It offers various validation techniques such as bootstrapping and cross-validation. A proof of concept is given for a deep learning model consisting of a convolutional neural network for the classification of acute myocardial infarction based on ECG data.
+[comment]: <> (The use of artificial intelligence &#40;AI&#41; for analysis of electrocardiogram &#40;ECG&#41; data has recently gained much interest in the AI and medical communities. The discussed models have shown to be able to deliver high diagnostic sensitivity and specificity for detection of various cardiac diseases including rhythm disorders and ischemic events. However, the experiments leading to these results are often difficult to reproduce outside of the original experimental setup and researchers who want to externally validate such results or use them as starting points for new experiments are forced to develop their own models from scratch. We therefore propose a software environment that enables to build, train and evaluate AI models for ECG classification in a reproducible manner and offers sharing of experiment configurations among researchers. The environment further provides simple connection of publicly available data sources of validated ECG recordings. It offers various validation techniques such as bootstrapping and cross-validation. A proof of concept is given for a deep learning model consisting of a convolutional neural network for the classification of acute myocardial infarction based on ECG data.)
 
-Authors: Nils Gumpfer, Joshua Prim, Dimitri Grün, Jennifer Hannig, Till Keller, Michael Guckert
+[comment]: <> (Authors: Nils Gumpfer, Joshua Prim, Dimitri Grün, Jennifer Hannig, Till Keller, Michael Guckert)
 
-AIME 2021, Springer Lecture Notes in Computer Science, https://doi.org/10.101010/9999999
+[comment]: <> (AIME 2021, Springer Lecture Notes in Computer Science, https://doi.org/10.101010/9999999)
 
 
 ## Setup
@@ -117,12 +117,15 @@ To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation
 
 The example described in our paper (see https://doi.org/10.101010/9999999) relies on data from PTB-XL (https://physionet.org/content/ptb-xl/) and a simple CNN architecture. The required process steps are described above. If you want to alter the experiment or create your own, you can find the experiment configuration file in the `\experiments` directory in the root directory of this repository. The resulting model is visualized below the achieved performance metrics:
 
-### Performance
+[comment]: <> (### Performance)
 
- Level | Area under the curve | Sensitivity | Specificity
-|---|---|---|---|
-subsample-level |0.96 ± 0.00|78.90 ± 4.01 %|97.07 ± 0.92 %|
-sample-level |0.96 ± 0.01|79.49 ± 3.35 %|98.54 ± 0.42 %|
+[comment]: <> ( Level | Area under the curve | Sensitivity | Specificity)
+
+[comment]: <> (|---|---|---|---|)
+
+[comment]: <> (subsample-level |0.96 ± 0.00|78.90 ± 4.01 %|97.07 ± 0.92 %|)
+
+[comment]: <> (sample-level |0.96 ± 0.01|79.49 ± 3.35 %|98.54 ± 0.42 %|)
 
 ### Model architecture
 
