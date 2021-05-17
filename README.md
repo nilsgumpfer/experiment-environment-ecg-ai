@@ -1,3 +1,12 @@
+# An Experiment Environment for Definition, Training and Evaluation of Electrocardiogram-Based AI Models
+_Nils Gumpfer, Joshua Prim, Dimitri Gruen, Jennifer Hannig, Till Keller and Michael Guckert_
+
+
+https://doi.org/10.1007/978-3-030-77211-6_45
+
+http://aime21.aimedicine.info/
+
+
 ## Setup
 
 For usage of this environment, you require a linux-based server with enough memory (>64GB) and optional GPUs. The environment supports Ubuntu >= 16.04 and can be used with NVIDIA-based GPUs, e.g. on a DGX server.
