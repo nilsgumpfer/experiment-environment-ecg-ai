@@ -173,6 +173,8 @@ def summarize_labels_snomed(ecgs, metadata, targetname):
             ecg['clinical_parameters_outputs'] = {targetname: [0, 1]}
             count_neg += 1
 
+        ecg['clinical_parameters_inputs'] = {}
+
         collected[recid] = ecg
 
     print('IS', count_pos, count_neg)

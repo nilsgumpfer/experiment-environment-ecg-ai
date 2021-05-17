@@ -89,7 +89,8 @@ def load_raw_ecgs_and_header_labels_wfdb(path, filenames, record_ids, leads_to_u
 
         labels = get_labels_from_header(filepath)
 
-        data[record_id] = {'leads': leads, 'metadata': metadata, 'labels': labels}
+        if len(leads) == len(leads_to_use):
+            data[record_id] = {'leads': leads, 'metadata': metadata, 'labels': labels}
 
         i += 1
 
