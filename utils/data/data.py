@@ -8,7 +8,8 @@ import pandas as pd
 from sklearn.utils import shuffle, resample
 from xml.dom import minidom
 
-from utils.api.wfdb_api import load_norm_and_mi_ecgs, load_patientrecords_mi_norm
+from utils.api.wfdb_api import load_norm_and_mi_ecgs, load_patientrecords_mi_norm, \
+    load_raw_ecgs_and_header_labels_georgia
 from utils.data.validation import validate_and_clean_float, validate_and_clean_char
 from utils.file.file import save_dict_as_json, load_string_from_file, load_dict_from_json, \
     pickle_data, unpickle_data, make_dirs_if_not_present
@@ -141,10 +142,20 @@ def load_ecgs_from_custom_snapshots(snapshots, leads_to_use, record_ids_excluded
     return ecgs
 
 
-def load_ecgs_from_ptbxl(snapshot, sampling_rate=500, leads_to_use=None,
-                         snapshot_directory='../../data/ptbxl/snapshots', record_ids_excluded=None):
+def load_ecgs_from_ptbxl(snapshot, sampling_rate=500, leads_to_use=None, snapshot_directory='../../data/ptbxl/snapshots', record_ids_excluded=None):
     path = snapshot_directory + '/{}/'.format(snapshot)
     ecgs = load_norm_and_mi_ecgs(path, sampling_rate, leads_to_use, record_ids_excluded)
+
+    return ecgs
+
+
+def load_ecgs_from_georgia(snapshot, labels_to_use, leads_to_use=None, snapshot_directory='../../data/georgia/snapshots', record_ids_excluded=None):
+    path = snapshot_directory + '/{}/'.format(snapshot)
+
+    ecgs = load_raw_ecgs_and_header_labels_georgia(path, labels_to_use, record_ids_excluded=record_ids_excluded, leads_to_use=leads_to_use)
+
+    for record_id in ecgs:
+        print(ecgs[record_id]['clinical_parameters_outputs'])
 
     return ecgs
 

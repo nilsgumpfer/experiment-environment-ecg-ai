@@ -3,6 +3,7 @@ Code partly based on https://github.com/helme/ecg_ptbxl_benchmarking
 """
 
 import logging
+import os
 
 import pandas as pd
 import numpy as np
@@ -53,6 +54,98 @@ def load_raw_ecgs_wfdb(path, filenames, record_ids, leads_to_use=None):
         data[record_id] = {'leads': leads, 'metadata': metadata}
 
     return data
+
+
+def load_raw_ecgs_and_header_labels_wfdb(path, filenames, record_ids, labels_to_use, leads_to_use=None):
+    filepaths = [path + f for f in filenames]
+
+    data = {}
+
+    for filepath, record_id in zip(filepaths, record_ids):
+        logging.debug('Loading {}'.format(filepath))
+
+        signal, meta = wfdb.rdsamp(filepath)
+        signal = perform_shape_switch(signal)
+        signal = np.nan_to_num(signal)
+
+        metadata = {'sampling_rate_sec': meta['fs'],
+                    'unitofmeasurement': meta['units'][0],
+                    'length_sec': meta['sig_len'] / meta['fs'],
+                    'length_timesteps': meta['sig_len']}
+
+        leads = {}
+
+        for lead_id, lead_signal in zip(meta['sig_name'], signal):
+            if leads_to_use is None:
+                leads[lead_id] = lead_signal
+
+            elif lead_id in leads_to_use:
+                leads[lead_id] = lead_signal
+
+        labels = set(get_labels_from_header(filepath))
+        labels_diff = labels - set(labels_to_use)
+        labels = list(labels - labels_diff)
+
+        clinical_parameters_outputs = {}
+
+        for label in labels:
+            clinical_parameters_outputs[label] = True
+
+        data[record_id] = {'leads': leads, 'metadata': metadata, 'clinical_parameters_outputs': clinical_parameters_outputs, 'clinical_parameters_inputs': {}}
+
+    return data
+
+
+def get_labels_from_header(header_file):
+    labels = list()
+
+    with open('{}.hea'.format(header_file), 'r') as f:
+        header = f.read()
+
+        for l in header.split('\n'):
+            if l.startswith('#Dx'):
+                try:
+                    entries = l.split(': ')[1].split(',')
+                    for entry in entries:
+                        labels.append(entry.strip())
+                except:
+                    pass
+    return labels
+
+
+def load_raw_ecgs_and_header_labels_georgia(path, labels_to_use, record_ids_excluded=None, leads_to_use=None):
+    filenames = os.listdir(path)
+    record_ids = []
+
+    for filename in filenames:
+        if filename.endswith('.hea'):
+            recid = filename.replace('.hea', '')
+
+            if record_ids_excluded is None:
+                record_ids.append(recid)
+            elif recid not in record_ids_excluded:
+                record_ids.append(recid)
+
+    # record_ids = record_ids[0:10]
+    labels = []
+    filepaths = [path + f for f in record_ids]
+    for fp in filepaths:
+        labels += get_labels_from_header(fp)
+
+    labels_filtered = sorted(list(set(labels)))
+
+    counts = []
+
+    for l in labels_filtered:
+        counts.append(labels.count(l))
+
+
+    import pandas as pd
+    pd.DataFrame({'label': labels_filtered, 'count': counts}).to_csv('labels.csv', index=False)
+
+    print('labels done')
+
+    return load_raw_ecgs_and_header_labels_wfdb(path, record_ids, record_ids, labels_to_use, leads_to_use=leads_to_use)
 
 
 def load_raw_ecgs_shareedb(path, leads_to_use=None):
