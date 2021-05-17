@@ -12,6 +12,7 @@ import ast
 
 from utils.file.file import load_string_from_file
 from utils.misc.datastructure import perform_shape_switch
+from utils.misc.logger import print_progress_bar
 
 
 def load_raw_ecgs_ptbxl(df, sampling_rate, path, leads_to_use=None):
@@ -56,12 +57,16 @@ def load_raw_ecgs_wfdb(path, filenames, record_ids, leads_to_use=None):
     return data
 
 
-def load_raw_ecgs_and_header_labels_wfdb(path, filenames, record_ids, labels_to_use, leads_to_use=None):
+def load_raw_ecgs_and_header_labels_wfdb(path, filenames, record_ids, leads_to_use=None):
     filepaths = [path + f for f in filenames]
 
     data = {}
 
+    i = 0
+
     for filepath, record_id in zip(filepaths, record_ids):
+        print_progress_bar(i, len(record_ids))
+
         logging.debug('Loading {}'.format(filepath))
 
         signal, meta = wfdb.rdsamp(filepath)
@@ -82,16 +87,11 @@ def load_raw_ecgs_and_header_labels_wfdb(path, filenames, record_ids, labels_to_
             elif lead_id in leads_to_use:
                 leads[lead_id] = lead_signal
 
-        labels = set(get_labels_from_header(filepath))
-        labels_diff = labels - set(labels_to_use)
-        labels = list(labels - labels_diff)
+        labels = get_labels_from_header(filepath)
 
-        clinical_parameters_outputs = {}
+        data[record_id] = {'leads': leads, 'metadata': metadata, 'labels': labels}
 
-        for label in labels:
-            clinical_parameters_outputs[label] = True
-
-        data[record_id] = {'leads': leads, 'metadata': metadata, 'clinical_parameters_outputs': clinical_parameters_outputs, 'clinical_parameters_inputs': {}}
+        i += 1
 
     return data
 
@@ -113,7 +113,7 @@ def get_labels_from_header(header_file):
     return labels
 
 
-def load_raw_ecgs_and_header_labels_georgia(path, labels_to_use, record_ids_excluded=None, leads_to_use=None):
+def load_raw_ecgs_and_header_labels_georgia(path, record_ids_excluded=None, leads_to_use=None):
     filenames = os.listdir(path)
     record_ids = []
 
@@ -126,32 +126,12 @@ def load_raw_ecgs_and_header_labels_georgia(path, labels_to_use, record_ids_excl
             elif recid not in record_ids_excluded:
                 record_ids.append(recid)
 
-    # record_ids = record_ids[0:10]
-    labels = []
-    filepaths = [path + f for f in record_ids]
-    for fp in filepaths:
-        labels += get_labels_from_header(fp)
-
-    labels_filtered = sorted(list(set(labels)))
-
-    counts = []
-
-    for l in labels_filtered:
-        counts.append(labels.count(l))
-
-
-    import pandas as pd
-    pd.DataFrame({'label': labels_filtered, 'count': counts}).to_csv('labels.csv', index=False)
-
-    print('labels done')
-
-    return load_raw_ecgs_and_header_labels_wfdb(path, record_ids, record_ids, labels_to_use, leads_to_use=leads_to_use)
+    return load_raw_ecgs_and_header_labels_wfdb(path, record_ids, record_ids, leads_to_use=leads_to_use)
 
 
 def load_raw_ecgs_shareedb(path, leads_to_use=None):
     records_file = path + 'RECORDS'
     record_ids = load_string_from_file(records_file).split('\n')
-    record_ids = record_ids[1:3] #TODO: tmp
 
     return load_raw_ecgs_wfdb(path, record_ids, record_ids, leads_to_use=leads_to_use)
 

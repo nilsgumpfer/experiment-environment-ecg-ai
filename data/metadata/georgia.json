@@ -1,11 +1,1 @@
-{
-	"428750005":
-	{
-		"description": "Nonspecific ST-T abnormality on electrocardiogram",
-		"values_one_hot":
-		{
-			"True": [1, 0],
-			"False": [0, 1]
-		}
-	}
-}
+{"IS": ["426177001", "426783006", "428750005"]}

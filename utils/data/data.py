@@ -149,13 +149,40 @@ def load_ecgs_from_ptbxl(snapshot, sampling_rate=500, leads_to_use=None, snapsho
     return ecgs
 
 
-def load_ecgs_from_georgia(snapshot, labels_to_use, leads_to_use=None, snapshot_directory='../../data/georgia/snapshots', record_ids_excluded=None):
+def summarize_labels_snomed(ecgs, metadata, targetname):
+    md = load_metadata(metadata)
+    ids = md[targetname]
+
+    collected = {}
+
+    count_pos, count_neg = 0, 0
+
+    for recid in ecgs:
+        collect = False
+        ecg = ecgs[recid]
+        labels = ecg['labels']
+
+        for label in labels:
+            if label in ids:
+                collect = True
+
+        if collect:
+            ecg['clinical_parameters_outputs'] = {targetname: [1, 0]}
+            count_pos += 1
+        else:
+            ecg['clinical_parameters_outputs'] = {targetname: [0, 1]}
+            count_neg += 1
+
+        collected[recid] = ecg
+
+    print('IS', count_pos, count_neg)
+
+    return collected
+
+
+def load_ecgs_from_georgia(snapshot, leads_to_use=None, snapshot_directory='../../data/georgia/snapshots', record_ids_excluded=None):
     path = snapshot_directory + '/{}/'.format(snapshot)
-
-    ecgs = load_raw_ecgs_and_header_labels_georgia(path, labels_to_use, record_ids_excluded=record_ids_excluded, leads_to_use=leads_to_use)
-
-    for record_id in ecgs:
-        print(ecgs[record_id]['clinical_parameters_outputs'])
+    ecgs = load_raw_ecgs_and_header_labels_georgia(path, record_ids_excluded=record_ids_excluded, leads_to_use=leads_to_use)
 
     return ecgs
 
@@ -260,7 +287,9 @@ def derive_ecg_variants(ecg, variants):
         if variant == 'ecg_raw':
             derived_ecg[variant] = ecg['leads']
 
-    derived_ecg['metadata'] = ecg['metadata']
+    for k in ecg:
+        if k != 'leads':
+            derived_ecg[k] = ecg[k]
 
     return derived_ecg
 
