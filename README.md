@@ -1,4 +1,5 @@
 # An Experiment Environment for Definition, Training and Evaluation of Electrocardiogram-Based AI Models
+## Feature branch for experimentation with GeorgiaDB from current PhysioNet-Challenge
 _Nils Gumpfer, Joshua Prim, Dimitri Gruen, Jennifer Hannig, Till Keller and Michael Guckert_
 
 
