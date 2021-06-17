@@ -6,6 +6,8 @@ https://doi.org/10.1007/978-3-030-77211-6_45
 
 http://aime21.aimedicine.info/
 
+![Model Architecture](./AIME__Experiment_Environment_Poster-1.png)
+
 
 ## Setup
 
