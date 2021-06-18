@@ -2,11 +2,11 @@
 _Nils Gumpfer, Joshua Prim, Dimitri Gruen, Jennifer Hannig, Till Keller and Michael Guckert_
 
 
-https://doi.org/10.1007/978-3-030-77211-6_45
+Paper: https://doi.org/10.1007/978-3-030-77211-6_45
+Poster: https://github.com/nilsgumpfer/experiment-environment-ecg-ai/blob/master/AIME__Experiment_Environment_Poster.pdf
+AIME 2021 Conference: http://aime21.aimedicine.info/
 
-http://aime21.aimedicine.info/
-
-![Model Architecture](./AIME__Experiment_Environment_Poster-1.png)
+![Poster](./AIME__Experiment_Environment_Poster-1.png)
 
 
 ## Setup
