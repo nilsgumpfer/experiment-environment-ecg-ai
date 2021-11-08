@@ -1,0 +1,68 @@
+label,text,count
+11157007,Ventricular bigeminy (disorder),2
+111975006,Prolonged QT interval (finding),1391
+164865005,Electrocardiographic myocardial infarction (finding),7
+164873001,Electrocardiographic left ventricle hypertrophy (finding),1232
+164884008,Electrocardiogram: ventricular ectopics (finding),41
+164889003,Electrocardiographic atrial fibrillation (finding),570
+164890007,Electrocardiographic atrial flutter (finding),186
+164896001,Electrocardiographic ventricular fibrillation (finding),3
+164909002,Electrocardiographic left bundle branch block (finding),231
+164917005,Electrocardiographic Q wave abnormal (finding),464
+164921003,Electrocardiographic R wave abnormal (finding),10
+164930006,Electrocardiographic ST interval abnormal (finding),992
+164931005,ST elevation (observable entity),134
+164934002,Electrocardiographic T wave abnormal (finding),2306
+17338001,Ventricular premature beats (disorder),357
+195042002,Second degree atrioventricular block (disorder),23
+195060002,Ventricular pre-excitation (disorder),2
+195080001,Atrial fibrillation and flutter (disorder),2
+195101003,Wandering atrial pacemaker (finding),7
+195126007,Atrial hypertrophy (disorder),60
+233917008,Atrioventricular block (disorder),74
+251120003,Incomplete left bundle branch block (disorder),86
+251139008,Suspect arm electrocardiogram leads reversed (finding),12
+251146004,Low QRS voltages (finding),374
+251180001,Ventricular trigeminy (disorder),1
+251266004,Ventricular pacing pattern (finding),46
+251268003,Atrial pacing pattern (finding),52
+253339007,Right atrial abnormality (disorder),14
+253352002,Left atrial abnormality (disorder),72
+266249003,Ventricular hypertrophy (disorder),71
+270492004,First degree atrioventricular block (disorder),769
+27885002,Complete atrioventricular block (disorder),8
+284470004,Premature atrial contraction (disorder),639
+39732003,Left axis deviation (finding),940
+413444003,Acute myocardial ischemia (disorder),1
+425419005,Electrocardiographic inferior ischemia (finding),451
+425623009,Electrocardiographic lateral ischemia (finding),903
+426177001,Electrocardiogram: sinus bradycardia (finding),1677
+426434006,Electrocardiographic anterior ischemia (finding),281
+426627000,Electrocardiogram: bradycardia (finding),6
+426648003,Electrocardiogram: junctional tachycardia (finding),4
+426664006,Electrocardiographic accelerated junctional rhythm (finding),19
+426761007,Electrocardiographic supraventricular tachycardia (finding),32
+426783006,Electrocardiogram: sinus rhythm (finding),1752
+426995002,Electrocardiographic junctional escape rhythm (finding),5
+427084000,Electrocardiogram: sinus tachycardia (finding),1261
+427393009,Electrocardiogram: sinus arrhythmia (finding),455
+428417006,Early repolarization (finding),140
+428750005,Nonspecific ST-T abnormality on electrocardiogram (finding),1883
+429622005,ST Depression (observable entity),38
+445118002,Left anterior fascicular block on electrocardiogram (finding),180
+445211001,Left posterior fascicular block on electrocardiogram (finding),25
+47665007,Right axis deviation (finding),83
+49578007,Shortened PR interval (finding),2
+55930002,Electrocardiographic ST segment changes (finding),6
+59118001,Right bundle branch block (disorder),542
+59931005,Inverted T wave (finding),812
+63593006,Supraventricular premature beats (disorder),1
+6374002,Bundle branch block (disorder),116
+67741000119109,Left atrial enlargement (disorder),870
+698252002,Non-specific intraventricular conduction delay (disorder),203
+713422000,Electrocardiographic atrial tachycardia (finding),28
+713426002,Electrocardiographic incomplete right bundle branch block (finding),407
+713427006,Electrocardiographic complete right bundle branch block (finding),28
+74390002,Wolff-Parkinson-White pattern (disorder),2
+81898007,Ventricular escape rhythm (disorder),1
+89792004,Right ventricular hypertrophy (disorder),86

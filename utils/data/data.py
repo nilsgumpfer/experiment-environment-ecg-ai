@@ -189,6 +189,29 @@ def load_ecgs_from_georgia(snapshot, leads_to_use=None, snapshot_directory='../.
     return ecgs
 
 
+def load_ecgs_from_georgia_grouped(snapshot, leads_to_use=None, snapshot_directory='../../data/georgia/snapshots', record_ids_excluded=None):
+    ecgs = load_ecgs_from_georgia(snapshot, leads_to_use=leads_to_use, snapshot_directory=snapshot_directory, record_ids_excluded=record_ids_excluded)
+    # ecgs = unpickle_data('data/georgiadb.pickled')
+
+    groups = {'ischemia': ['413444003', '426434006', '425419005', '425623009', '164865005', '164930006', '55930002', '164934002', '59931005', '428750005', '429622005', '164931005'],
+              'healthy': ['426783006'],
+              'other': ['195080001', '195126007', '251268003', '233917008', '6374002', '27885002', '428417006', '426627000', '426648003', '427393009', '426177001', '427084000', '164884008', '426664006', '164889003', '164890007', '713422000', '713427006', '713426002', '426995002', '164909002', '164873001', '164921003', '426761007', '164896001', '270492004', '251120003', '445118002', '253352002', '67741000119109', '39732003', '445211001', '251146004', '698252002', '284470004', '111975006', '253339007', '47665007', '59118001', '89792004', '195042002', '49578007', '63593006', '251139008', '11157007', '81898007', '266249003', '251266004', '195060002', '17338001', '251180001', '195101003', '74390002', '164917005']}
+
+    for recid in ecgs:
+        ecgs[recid]['groups'] = []
+        for l in ecgs[recid]['labels']:
+            for g in groups:
+                if l in groups[g]:
+                    ecgs[recid]['groups'].append(g)
+
+        ecgs[recid]['groups'] = list(set(ecgs[recid]['groups']))
+
+        if 'ischemia' in ecgs[recid]['groups'] and len(ecgs[recid]['groups']) > 1:
+            ecgs[recid]['groups'] = ['ischemia']
+
+    return ecgs
+
+
 def load_clinical_parameters_json(path, params_input, params_output):
     allparams = load_dict_from_json(path)
 

@@ -7,15 +7,10 @@ from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
 from matplotlib.ticker import AutoMinorLocator
 
-from sandbox.test_chronicle_db import select_r_r_intervals_from_ecg_on_cronicle_db_v1, \
-    select_r_r_intervals_from_ecg_on_cronicle_db_v2
-from utils.api.redcap_api import load_file
 from utils.data.data import convert_lead_dict_to_matrix, load_ecg_xml, parse_ecg_xml, scale_ecg, derive_ecg_variants, \
-    load_ecgs_from_ptbxl, load_ecg_csv, load_dataset, convert_matrix_to_lead_dict_ecg
+    load_ecgs_from_ptbxl, load_ecg_csv, load_dataset
 from utils.file.file import cleanup_directory
-from utils.misc.datastructure import perform_shape_switch
 from utils.misc.logger import print_progress_bar
-from utils.viz.multicolor import plot_multicolored_line
 
 
 def plot_ecg(ecg, subdict='ecg_raw', title='ECG', save_to=None, colorize=None, normalize_colors=True,
@@ -196,28 +191,11 @@ def generate_medical_ecg_plot(
                 if show_lead_name:
                     ax.text(x_offset + 0.07, y_offset - 0.5, lead_index[t_lead], fontsize=9 * display_factor)
 
-                # ax.plot(
-                #     np.arange(0, len(ecg[t_lead]) * step, step) + x_offset,
-                #     ecg[t_lead] + y_offset,
-                #     linewidth=line_width * display_factor,
-                #     color=color_line
-                # )
-
-                if color_matrix is not None:
-                    colors_lead = color_matrix[t_lead]
-                else:
-                    colors_lead = None
-
-                plot_multicolored_line(
-                    x=np.arange(0, len(ecg[t_lead]) * step, step) + x_offset,
-                    y=ecg[t_lead] + y_offset,
-                    z=colors_lead,
-                    ax=ax,
-                    cmap=cmap,
+                ax.plot(
+                    np.arange(0, len(ecg[t_lead]) * step, step) + x_offset,
+                    ecg[t_lead] + y_offset,
                     linewidth=line_width * display_factor,
-                    default_color=color_line,
-                    norm=norm,
-                    adjustplot=False
+                    color=color_line
                 )
 
     # Add bottom label
@@ -269,13 +247,6 @@ def plot_ecg_from_xml(path, title=None, scale=None, save_to=None, colorize=None,
              colorbar_tickvalues=colorbar_tickvalues)
 
 
-def plot_ecg_from_redcap_api(record_id, title='ECG'):
-    xmlcode = load_file(record_id=record_id, field='varid_ekg_hl7', event='baseline_arm_1')
-    leads, metadata = parse_ecg_xml(xmlcode)
-    ecg = {'leads': leads, 'metadata': metadata}
-    scaled_ecg = scale_ecg(ecg, 1 / 1000)
-    derived_ecg = derive_ecg_variants(scaled_ecg, ['ecg_raw'])
-    plot_ecg(derived_ecg, title=title)
 
 
 def plot_ecg_from_ptbxl(record_id, snapshot_id='1.0.1', title=None):
@@ -316,199 +287,3 @@ def plot_ecg_from_dataset(record_id, dataset_id, title=None, colorize=None):
 
     plot_ecg(records[record_id], title=title, colorize=colorize)
 
-
-def calc_color_matrix_for_r_r_intervals_v1(cronicle_db_record_id, lead_ids, lead_length=5000):
-    collected = []
-
-    for lead_id in lead_ids:
-        # Perform RR interval segmentation only for lead I, then propagate values to all leads
-        if lead_id == 'lead_I':
-            c_lead = np.zeros((lead_length,))
-            r_r_intervals = select_r_r_intervals_from_ecg_on_cronicle_db_v1(lead_id, cronicle_db_record_id,
-                                                                            threshold=300)
-
-            if len(r_r_intervals) > 0:
-                print(lead_id, len(r_r_intervals))
-                r_r_distances = [x['R_R_DISTANCE'] for x in r_r_intervals]
-                r_r_max = max(r_r_distances)
-
-                for r_r_interval in r_r_intervals:
-                    r_r_distance_normalized = r_r_interval['R_R_DISTANCE'] / r_r_max
-                    r_r_interval_start = r_r_interval['R_R_START']
-                    r_r_interval_end = r_r_interval['R_R_END']
-
-                    for i in np.arange(start=r_r_interval_start, stop=r_r_interval_end):
-                        c_lead[i] = r_r_distance_normalized
-
-                    # # Mark R peaks for testing
-                    # for i in np.arange(start=r_r_interval_start, stop=r_r_interval_start + 50):
-                    #     c_lead[i] = 1
-                    # for i in np.arange(start=r_r_interval_end, stop=r_r_interval_end + 50):
-                    #     c_lead[i] = 1
-
-            # c_lead[0] = -1
-            # c_lead[lead_length-1] = 1
-
-        collected.append(c_lead)
-
-    return np.array(collected), r_r_max
-
-
-def calc_color_matrix_for_r_r_intervals_v2(cronicle_db_record_id, lead_ids, lead_length=5000):
-    collected = []
-
-    for lead_id in lead_ids:
-        # Perform RR interval segmentation only for lead I, then propagate values to all leads
-        if lead_id == 'lead_I':
-            c_lead = np.zeros((lead_length,))
-            r_r_intervals = select_r_r_intervals_from_ecg_on_cronicle_db_v2(lead_id, cronicle_db_record_id,
-                                                                            threshold=300)
-
-            if len(r_r_intervals) > 0:
-                print(lead_id, len(r_r_intervals))
-                r_r_distances = [x['R_R_DISTANCE'] for x in r_r_intervals]
-                r_r_mean = np.mean(r_r_distances)
-                r_r_deviations = [x['R_R_DISTANCE'] - r_r_mean for x in r_r_intervals]
-                r_r_deviation_max = max(np.abs(r_r_deviations))
-                r_r_deviation_min = r_r_deviation_max * -1
-                r_r_stddev = np.std(r_r_distances)
-                print('r_r_mean', r_r_mean)
-
-                for r_r_interval in r_r_intervals:
-                    r_r_deviation = r_r_interval['R_R_DISTANCE'] - r_r_mean
-                    r_r_deviation_normalized = r_r_deviation / r_r_deviation_max
-                    r_r_interval_start = r_r_interval['R_R_START']
-                    r_r_interval_end = r_r_interval['R_R_END']
-
-                    for i in np.arange(start=r_r_interval_start, stop=r_r_interval_end):
-                        if np.abs(r_r_deviation) > r_r_stddev:
-                            c_lead[i] = r_r_deviation_normalized
-
-        collected.append(c_lead)
-
-    return np.array(collected), r_r_deviation_max, r_r_deviation_min
-
-
-def calc_color_matrix_for_r_r_intervals_v3(cronicle_db_record_id, lead_ids, lead_length=5000):
-    collected = []
-
-    for lead_id in lead_ids:
-        # Perform RR interval segmentation only for lead I, then propagate values to all leads
-        if lead_id == 'lead_I':
-            c_lead = np.zeros((lead_length,))
-            r_r_intervals = select_r_r_intervals_from_ecg_on_cronicle_db_v2(lead_id, cronicle_db_record_id,
-                                                                            threshold=300)
-
-            if len(r_r_intervals) > 0:
-                print(lead_id, len(r_r_intervals))
-                r_r_distances = [x['R_R_DISTANCE'] for x in r_r_intervals]
-                r_r_mean = np.mean(r_r_distances)
-                r_r_deviations = [x['R_R_DISTANCE'] - r_r_mean for x in r_r_intervals]
-                r_r_deviation_max = max(np.abs(r_r_deviations))
-                r_r_deviation_min = r_r_deviation_max * -1
-                r_r_stddev = np.std(r_r_distances)
-                print('r_r_mean', r_r_mean)
-
-                for r_r_interval in r_r_intervals:
-                    r_r_deviation = r_r_interval['R_R_DISTANCE'] - r_r_mean
-                    r_r_interval_start = r_r_interval['R_R_START']
-                    r_r_interval_end = r_r_interval['R_R_END']
-
-                    for i in np.arange(start=r_r_interval_start, stop=r_r_interval_end):
-                        if np.abs(r_r_deviation) > r_r_stddev:
-                            c_lead[i] = 1
-
-        collected.append(c_lead)
-
-    return np.array(collected)
-
-
-def generate_color_matrix_for_single_interval(n_leads, len_leads, color_from, color_to):
-    mtrx = np.zeros((n_leads, len_leads))
-
-    for t in np.arange(start=color_from, stop=color_to):
-        for n in range(n_leads):
-            mtrx[n][t] = 1
-
-    return mtrx
-
-
-def plot_extracted_features_clusters(ex_ecgparts, ex_heatmaps, cluster_labels, nrows=30, ncols=30):
-    H = {x: [] for x in set(cluster_labels)}
-    E = {x: [] for x in set(cluster_labels)}
-
-    for c, e, h in zip(cluster_labels, ex_ecgparts, ex_heatmaps):
-        H[c].append(h)
-        E[c].append(e)
-
-    for c in set(cluster_labels):
-        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 15))
-        axes = np.array(ax).flatten()
-
-        for cax, e, h in zip(axes, E[c], H[c]):
-            cax.plot(e)
-
-        for a in axes:
-            a.set_yticks([])
-            a.set_xticks([])
-
-        plt.tight_layout()
-        print(c)
-        plt.savefig('/home/nils/Desktop/cluster_{}.png'.format(c))
-        plt.close()
-        plt.clf()
-
-
-def plot_extracted_features(ex_ecgparts, ex_heatmaps, onlypaths=False, figsize=(2, 10), linewidth=5, cellar='/tmp'):
-    paths = []
-
-    if not onlypaths:
-        cleanup_directory('{}/featureplots'.format(cellar), make=True)
-
-    fig, ax = plt.subplots(figsize=figsize)
-
-    for e, h, i in zip(ex_ecgparts, ex_heatmaps, range(len(ex_ecgparts))):
-        path = '{}/featureplots/feature_{}.png'.format(cellar, i)
-        paths.append(path)
-
-        if onlypaths==False:
-            abs_max = np.percentile(np.abs(h), 100)
-            norm = plt.Normalize(-abs_max, abs_max)
-
-            lc = plot_multicolored_line(y=e, z=h, ax=ax, linewidth=linewidth, norm=norm, adjustax=True)
-
-            if max(e) - min(e) < 0.7:
-                m = np.mean(e)
-                ax.set_ylim(m - 0.5, m + 0.5)
-            else:
-                ax.set_ylim(min(e), max(e))
-
-            ax.set_yticks([])
-            ax.set_xticks([])
-
-            plt.tight_layout()
-            plt.savefig(path)
-            lc.remove()
-
-            print_progress_bar(i, len(ex_ecgparts))
-
-    plt.clf()
-    plt.close()
-
-    return paths
-
-
-def plot_all_csvs_in_dir_as_pdf(directory):
-    files = os.listdir(directory)
-
-    for file in files:
-        if file.endswith('.csv'):
-            try:
-                print('Plotting "{}"'.format(file))
-                plot_ecg_from_csv(path='{}/{}'.format(directory, file),
-                                  scale=1 / 1000,
-                                  save_to='same',
-                                  columns=2
-                                  )
-            except Exception as e:
-                print(e)

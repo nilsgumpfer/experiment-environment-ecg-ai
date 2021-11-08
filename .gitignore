@@ -6,3 +6,5 @@ tensorboard/
 *.h5
 *.pickled
 *.zip
+/data/plots/
+/data/georgia_csv/
