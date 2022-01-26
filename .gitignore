@@ -2,6 +2,8 @@ __pycache__/
 tensorboard/
 /data/ptbxl/
 /data/georgia/
+/data/georgia_csv/
+/data/plots/
 .idea/
 *.h5
 *.pickled

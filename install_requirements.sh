@@ -17,3 +17,9 @@ apt-get install -y google-cloud-sdk
 
 # Init google cloud API
 gcloud init
+
+# Install python requirements
+pip3 install -r requirements.txt
+
+# Export python path
+echo "export PYTHONPATH='..:.:../..'" >> ~/.bashrc

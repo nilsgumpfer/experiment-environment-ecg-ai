@@ -3,9 +3,13 @@
 _Nils Gumpfer, Joshua Prim, Dimitri Gruen, Jennifer Hannig, Till Keller and Michael Guckert_
 
 
-https://doi.org/10.1007/978-3-030-77211-6_45
+Paper: https://doi.org/10.1007/978-3-030-77211-6_45
 
-http://aime21.aimedicine.info/
+Poster: https://github.com/nilsgumpfer/experiment-environment-ecg-ai/blob/master/AIME__Experiment_Environment_Poster.pdf
+
+AIME 2021 Conference: http://aime21.aimedicine.info/
+
+![Poster](./AIME__Experiment_Environment_Poster-1.png)
 
 
 ## Setup
@@ -104,7 +108,7 @@ To run data preprocessing for an experiment, switch to directory `/runner/prepro
 
 ### Data splitting
 
-To run data splitting for an experiment, switch to directory `/runner/splitting_runner` and run `python3 splitting_runner.py -e $EXPERIMENT_ID$`, for example `python3 splitting_runner.py -e ptbxl_poc`
+To run data splitting for an experiment, switch to directory `/runner/split_runner` and run `python3 split_runner.py -e $EXPERIMENT_ID$`, for example `python3 split_runner.py -e ptbxl_poc`
 
 ### Experiment conduction
 
@@ -116,7 +120,7 @@ To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation
 
 ## Example
 
-The example described in our paper (see https://doi.org/10.101010/9999999) relies on data from PTB-XL (https://physionet.org/content/ptb-xl/) and a simple CNN architecture. The required process steps are described above. If you want to alter the experiment or create your own, you can find the experiment configuration file in the `\experiments` directory in the root directory of this repository. The resulting model is visualized below the achieved performance metrics:
+The example described in our paper (see https://doi.org/10.1007/978-3-030-77211-6_45) relies on data from PTB-XL (https://physionet.org/content/ptb-xl/) and a simple CNN architecture. The required process steps are described above. If you want to alter the experiment or create your own, you can find the experiment configuration file in the `\experiments` directory in the root directory of this repository. The resulting model is visualized below the achieved performance metrics:
 
 ### Model architecture
 
