@@ -107,7 +107,7 @@ To run data preprocessing for an experiment, switch to directory `/runner/prepro
 
 ### Data splitting
 
-To run data splitting for an experiment, switch to directory `/runner/splitting_runner` and run `python3 splitting_runner.py -e $EXPERIMENT_ID$`, for example `python3 splitting_runner.py -e ptbxl_poc`
+To run data splitting for an experiment, switch to directory `/runner/split_runner` and run `python3 split_runner.py -e $EXPERIMENT_ID$`, for example `python3 split_runner.py -e ptbxl_poc`
 
 ### Experiment conduction
 
