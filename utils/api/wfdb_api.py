@@ -58,7 +58,6 @@ def load_raw_ecgs_wfdb(path, filenames, record_ids, leads_to_use=None):
 def load_raw_ecgs_shareedb(path, leads_to_use=None):
     records_file = path + 'RECORDS'
     record_ids = load_string_from_file(records_file).split('\n')
-    record_ids = record_ids[1:3] #TODO: tmp
 
     return load_raw_ecgs_wfdb(path, record_ids, record_ids, leads_to_use=leads_to_use)
 

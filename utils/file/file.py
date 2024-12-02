@@ -6,7 +6,7 @@ import pickle
 import shutil
 
 import pandas as pd
-from PyPDF2 import PdfFileWriter, PdfFileReader
+from PyPDF2 import PdfWriter, PdfReader
 
 
 def save_dict_as_json(dct, path):
@@ -37,12 +37,12 @@ def load_string_from_file(path):
 
 
 def combine_pdfs(paths, targetpath, cleanup=False):
-    pdf_writer = PdfFileWriter()
+    pdf_writer = PdfWriter()
 
     for path in paths:
-        pdf_reader = PdfFileReader(path)
-        for page in range(pdf_reader.getNumPages()):
-            pdf_writer.addPage(pdf_reader.getPage(page))
+        pdf_reader = PdfReader(path)
+        for page in pdf_reader.pages:
+            pdf_writer.add_page(page)
 
     with open(targetpath, 'wb') as fh:
         pdf_writer.write(fh)

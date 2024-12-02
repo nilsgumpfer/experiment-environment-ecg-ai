@@ -1,0 +1,1 @@
+docker exec -it $(whoami)_exp_env_ub1804py36tf22 bash

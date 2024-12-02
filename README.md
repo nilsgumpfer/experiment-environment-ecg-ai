@@ -4,17 +4,14 @@ _Nils Gumpfer, Joshua Prim, Dimitri Gruen, Jennifer Hannig, Till Keller and Mich
 
 Paper: https://doi.org/10.1007/978-3-030-77211-6_45
 
-Poster: https://github.com/nilsgumpfer/experiment-environment-ecg-ai/blob/master/AIME__Experiment_Environment_Poster.pdf
-
 AIME 2021 Conference: http://aime21.aimedicine.info/
 
-![Poster](./AIME__Experiment_Environment_Poster-1.png)
+![Poster](./AIME_Poster.png)
 
 
 ## Setup
 
-For usage of this environment, you require a linux-based server with enough memory (>64GB) and optional GPUs. The environment supports Ubuntu >= 16.04 and can be used with NVIDIA-based GPUs, e.g. on a DGX server.
-To install all required software and python packages, run `sudo bash install_requirements.sh`. To download the PTB-XL database as used in the example experiment `ptbxl_poc.ini`, run `bash download_ptbxl.sh`.
+For usage of this environment, you require a linux-based server with enough memory (>64GB) and optional GPUs. The environment supports Ubuntu >= 16.04 and can be used with NVIDIA-based GPUs, e.g. on a DGX server. The environment is based on nvidia-docker. To create a container, go to the docker directory in this repository and run `bash create_container.sh`. After that, an image is built, data and necessary code are downloaded, packages are being installed and a container will be created. By executing `bash use_container.sh` afterwards, you can connect to the newly created container and run the example experiment configured in `ptbxl_poc.ini` as described below.
 
 ## Concept
 
@@ -30,6 +27,28 @@ Not all process steps require all parameters defined in the experiment configura
 The experiments rely on datasets. These are the result of the data preprocessing step. For the data preprocessing, records from a so-called snapshot (e.g. from PTB-XL) are loaded, filtered, cleansed, transformed, and finally saved as a ready-to-use dataset. This dataset is not yet split into training and validation records. This is done at runtime through so-called split-files. Split files are generated based on the records of a dataset and the validation type defined in the experiment configuration. An experiment is then conducted on the loaded data from the dataset, which is split into training, validation and optionally testing records at runtime. An experiment produces metrics at each epoch (which metrics, is defined in the configuration). After an experiment is finished, these metrics files are loaded and summarized in the evaluation step.
 
 Find the experiment parameters for all steps described above in the next section.
+
+## Process steps
+
+### Data preprocessing
+
+To run data preprocessing for an experiment, switch to directory `/runner/preprocessing_runner` and run `python3 preprocessing_runner.py -e $EXPERIMENT_ID$`, for example `python3 preprocessing_runner.py -e ptbxl_poc`
+
+### Data splitting
+
+To run data splitting for an experiment, switch to directory `/runner/split_runner` and run `python3 split_runner.py -e $EXPERIMENT_ID$`, for example `python3 split_runner.py -e ptbxl_poc`.
+
+### Experiment conduction
+
+To run an experiment, switch to directory `/runner/experiment_runner` and run `python3 experiment_runner.py -e $EXPERIMENT_ID$`, for example `python3 experiment_runner.py -e ptbxl_poc`. Experiment evaluation is performed automatically afterwards.
+
+### Experiment evaluation
+
+To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation_runner` and run `python3 evaluation_runner.py -e $EXPERIMENT_ID$`, for example `python3 evaluation_runner.py -e ptbxl_poc`
+
+## Example
+
+The example described in our paper (see https://doi.org/10.1007/978-3-030-77211-6_45) relies on data from PTB-XL (https://physionet.org/content/ptb-xl/) and a simple CNN architecture. The required process steps are described above. If you want to alter the experiment or create your own, you can find the experiment configuration file in the `\experiments` directory in the root directory of this repository. The resulting model is visualized below the achieved performance metrics:
 
 ## Experiment parameters
 
@@ -94,33 +113,3 @@ evaluation | tensorboard_subdir | yes | String | The subdir for tensorboard (you
 evaluation | sensitivity_threshold | yes | Float between 0 and 1 | The threshold for epoch/model selection. All models weaker than this value will not be considered for final metric calculation |
 evaluation | specificity_threshold | yes | Float between 0 and 1 | The threshold for epoch/model selection. All models weaker than this value will not be considered for final metric calculation |
 evaluation | save_raw_results | no | Boolean | The unfiltered result list containing all epochs can be saved to disk. Consider, that this file will be very large and requires much diskspace! |
-
-## Process steps
-
-### Snapshot creation
-
-To create a snapshot from PTB-XL, run `bash download_ptbxl.sh`'. To create a custom snapshot with CSV or XML ECGs, you have to create a subdirectory under `\data\custom\snapshots`. In this directory, you drop all ECG files in either CSV (column = lead) or XML (HL7v3, https://www.hl7.org/) format, accompanied by JSON files containing a dictionary of clinical parameters. You can create such JSON files by loading your clinical parameters into a python dictionary and saving it as JSON file. Example code for this is given in `export_clinical_parameters.py`. The ECGs and clinical parameters are matched based on their file name (without file ending), so make sure to name all JSON files according to their ECG files.
-
-### Data preprocessing
-
-To run data preprocessing for an experiment, switch to directory `/runner/preprocessing_runner` and run `python3 preprocessing_runner.py -e $EXPERIMENT_ID$`, for example `python3 preprocessing_runner.py -e ptbxl_poc`
-
-### Data splitting
-
-To run data splitting for an experiment, switch to directory `/runner/split_runner` and run `python3 split_runner.py -e $EXPERIMENT_ID$`, for example `python3 split_runner.py -e ptbxl_poc`
-
-### Experiment conduction
-
-To run an experiment, switch to directory `/runner/experiment_runner` and run `python3 experiment_runner.py -e $EXPERIMENT_ID$`, for example `python3 experiment_runner.py -e ptbxl_poc`. Experiment evaluation is performed automatically afterwards.
-
-### Experiment evaluation
-
-To manually (re-)evaluate an experiment, switch to directory `/runner/evaluation_runner` and run `python3 evaluation_runner.py -e $EXPERIMENT_ID$`, for example `python3 evaluation_runner.py -e ptbxl_poc`
-
-## Example
-
-The example described in our paper (see https://doi.org/10.1007/978-3-030-77211-6_45) relies on data from PTB-XL (https://physionet.org/content/ptb-xl/) and a simple CNN architecture. The required process steps are described above. If you want to alter the experiment or create your own, you can find the experiment configuration file in the `\experiments` directory in the root directory of this repository. The resulting model is visualized below the achieved performance metrics:
-
-### Model architecture
-
-![Model Architecture](./logs/experiments/ptbxl_poc/model.png)
